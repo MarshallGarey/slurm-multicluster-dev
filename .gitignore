@@ -1,0 +1,13 @@
+build
+spool
+log/*
+*/log/*
+share/*
+include/*
+lib/*
+bin/*
+sbin/*
+man/*
+*/state/*
+run/*
+*/run/*
