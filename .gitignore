@@ -11,3 +11,4 @@ man/*
 */state/*
 run/*
 */run/*
+slurm-*.out
