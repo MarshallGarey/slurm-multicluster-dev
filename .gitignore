@@ -1,5 +1,4 @@
 build
-spool
 share/*
 include/*
 lib/*
@@ -7,6 +6,4 @@ bin/*
 sbin/*
 man/*
 */state/*
-run/*
-*/run/*
 slurm-*.out
