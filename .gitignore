@@ -1,7 +1,5 @@
 build
 spool
-log/*
-*/log/*
 share/*
 include/*
 lib/*
