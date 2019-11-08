@@ -17,12 +17,14 @@ echo "stopping clusters discovery1, discovery2, discovery3, base=$basepath"
 # -z flag for if means is null
 if [ -n "`find $basepath/run ! -name '.gitignore' -type f`" ]
 then
+	printf "Stopping:\n`ls $basepath/run/`\n"
 	for pid in `cat $basepath/run/*.pid`; do sudo kill $pid; done
 fi
 for i in {1..3}
 do
-	if [ -n "`find $basepath/run ! -name '.gitignore' -type f`" ]
+	if [ -n "`find $basepath/discovery$i/run ! -name '.gitignore' -type f`" ]
 	then
+		printf "Stopping:\n`ls $basepath/discovery$i/run/`\n"
 		for pid in `cat $basepath/discovery$i/run/*.pid`; do sudo kill $pid; done
 	fi
 done
