@@ -19,7 +19,7 @@ sleep 3
 # Start slurmctld's
 for i in {1..3}
 do
-	SLURM_CONF="$basepath/discovery$i/etc/slurm.conf" $basepath/sbin/slurmctld
+	$basepath/sbin/slurmctld -f $basepath/discovery$i/etc/slurm.conf
 done
 
 # Start slurmd's
