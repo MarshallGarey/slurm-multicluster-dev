@@ -13,13 +13,14 @@ basepath="/home/marshall/slurm/master/install"
 echo "starting clusters discovery1, discovery2, discovery3, base=$basepath"
 
 # Start slurmdbd
-$basepath/sbin/slurmdbd
-sleep 3
+sudo -u marshall $basepath/sbin/slurmdbd
+sleep 1
 
 # Start slurmctld's
 for i in {1..3}
 do
-	$basepath/sbin/slurmctld -f $basepath/discovery$i/etc/slurm.conf
+	SLURM_CONF="$basepath/discovery$i/etc/slurm.conf"
+	sudo -u marshall SLURM_CONF=$SLURM_CONF $basepath/sbin/slurmctld -f $SLURM_CONF
 done
 
 # Start slurmd's
