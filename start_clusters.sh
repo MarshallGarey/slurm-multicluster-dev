@@ -26,7 +26,7 @@ done
 # Start slurmd's
 for i in {1..10}
 do
-	sudo $basepath/sbin/slurmd -f $basepath/c1/etc/slurm.conf -Nd1_$i
-	sudo $basepath/sbin/slurmd -f $basepath/c2/etc/slurm.conf -Nd2_$i
-	sudo $basepath/sbin/slurmd -f $basepath/c3/etc/slurm.conf -Nd3_$i
+	sudo $basepath/sbin/slurmd -f $basepath/c1/etc/slurm.conf -N n1-$i
+	sudo $basepath/sbin/slurmd -f $basepath/c2/etc/slurm.conf -N n2-$i
+	sudo $basepath/sbin/slurmd -f $basepath/c3/etc/slurm.conf -N n3-$i
 done
