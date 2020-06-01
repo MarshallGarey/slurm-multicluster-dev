@@ -9,8 +9,8 @@ then
 	exit 1
 fi
 
-basepath="/home/marshall/slurm/master/install"
-echo "stopping clusters discovery1, discovery2, discovery3, base=$basepath"
+basepath="/home/#USER/slurm/#VERSION/install"
+echo "stopping clusters c1, c2, c3, base=$basepath"
 
 # Are there any files in the directory (i.e., daemons are running)?
 # -n flag for if means is not null
@@ -22,9 +22,9 @@ then
 fi
 for i in {1..3}
 do
-	if [ -n "`find $basepath/discovery$i/run ! -name '.gitignore' -type f`" ]
+	if [ -n "`find $basepath/c$i/run ! -name '.gitignore' -type f`" ]
 	then
-		printf "Stopping:\n`ls $basepath/discovery$i/run/`\n"
-		for pid in `cat $basepath/discovery$i/run/*.pid`; do sudo kill $pid; done
+		printf "Stopping:\n`ls $basepath/c$i/run/`\n"
+		for pid in `cat $basepath/c$i/run/*.pid`; do sudo kill $pid; done
 	fi
 done
