@@ -1,12 +1,18 @@
-
 # README
-This is my multi-cluster/federation environment for Slurm. Please report any bugs to me.
+This is my multi-cluster/federation environment for Slurm.
 
-Unfortunately, I've hardcoded my path into the scripts and slurm.conf files. I've also hard-coded in the cluster names and the database name. I welcome edits to make this more generic.
+## Slurm Configuration:
+Open init\_conf\_files.sh with your favorite text editor. Set the variables
+user, version, and db\_name, following the guidelines in the script. Then close
+this file and run it. This will ensure the various scripts and configurations
+files have the correct username, file paths, and database name.
 
 ## How to build:
+Assuming your Slurm version is "master":
 
-    cd /home/marshall/slurm
+    cd ~/
+    mkdir slurm
+    cd slurm
     mkdir master
     cd master
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
@@ -22,14 +28,12 @@ Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/acc
 
     cd ../sbin
     ./slurmdbd
-    cd ../discovery1
-    export SLURM_CONF=`pwd`/slurm.conf
-    ./init_db.sh
     cd ..
-    ./start_clusters.sh
+    export SLURM_CONF=`pwd`/etc/slurm.conf
+    ./init_db.sh
+    sudo ./start_clusters.sh
 
-This creates 3 clusters in the database named discovery1, discovery2, and discovery3.
-init_db.sh will create a federation with sacctmgr of all 3 clusters.
+This creates 3 clusters in the database named c1, c2, and c3.
 
 ## How to Stop Slurm:
 
@@ -37,9 +41,9 @@ init_db.sh will create a federation with sacctmgr of all 3 clusters.
 
 ## Running Slurm commands:
 
-`cd` to the cluster (discovery1, discovery2, discovery3) that you want to run commands from. Set the path to the slurm.conf file of that cluster to the environment variables `SLURM_CONF`. cd to `bin` and run any Slurm command. For example, to submit a job from discovery1:
+`cd` to the cluster (c1, c2, c3) that you want to run commands from. Set the path to the slurm.conf file of that cluster to the environment variables `SLURM_CONF`. cd to `bin` and run any Slurm command. For example, to submit a job from cluster c1:
 
-    cd discovery1
+    cd c1
     export SLURM_CONF=`pwd`/etc/slurm.conf
     cd bin
     ./srun hostname
@@ -60,4 +64,4 @@ I simply added these things to a function in my `.bashrc` file called `setups`. 
     	export SLURM_CONF=$SYSCONF/etc/slurm.conf
     }
 
-Then I run `setups` from discovery1, discovery2, or discovery3.
+Then I run `setups` from c1, c2, or c3.
