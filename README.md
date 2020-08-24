@@ -15,7 +15,11 @@ Assuming your Slurm version is "master":
     cd slurm
     mkdir master
     cd master
+    # Clone Slurm
+    git clone git@github.com:SchedMD/slurm.git slurm
+    # Clone this repo
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
+    # Build and install Slurm
     mkdir install/build install/lib
     cd install/build
     ../../slurm/configure --prefix=/home/marshall/slurm/master/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/marshall/slurm/master/install/lib
