@@ -45,7 +45,7 @@ This creates 3 clusters in the database named c1, c2, and c3.
 
 ## Running Slurm commands:
 
-`cd` to the cluster (c1, c2, c3) that you want to run commands from. Set the path to the slurm.conf file of that cluster to the environment variables `SLURM_CONF`. cd to `bin` and run any Slurm command. For example, to submit a job from cluster c1:
+`cd` to the cluster (c1, c2, c3) that you want to run commands from. Set the path to the slurm.conf file of that cluster to the environment variables `SLURM_CONF`. `cd` to `bin` and run any Slurm command. For example, to submit a job from cluster c1:
 
     cd c1
     export SLURM_CONF=`pwd`/etc/slurm.conf
@@ -68,4 +68,4 @@ I simply added these things to a function in my `.bashrc` file called `setups`. 
     	export SLURM_CONF=$SYSCONF/etc/slurm.conf
     }
 
-Then I run `setups` from c1, c2, or c3.
+Then I run `setups` from c1, c2, or c3, then run any Slurm client command.
