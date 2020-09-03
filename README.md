@@ -6,6 +6,10 @@ Open init\_conf\_files.sh with your favorite text editor. Set the variables
 user, version, and db\_name, following the guidelines in the script. Then close
 this file and run it. This will ensure the various scripts and configurations
 files have the correct username, file paths, and database name.
+Note: This doesn't change the ports. You will have to manually change
+SlurmctldPort, AccountingStoragePort, and the ports for the nodes if these
+ports are already being used. TODO: Make a way to change these ports with
+init\_conf\_files.sh.
 
 ## How to build:
 Assuming your Slurm version is "master":
