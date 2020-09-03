@@ -31,7 +31,8 @@ Assuming your Slurm version is "master":
 
 I build with [make.py](https://gitlab.com/bsngardner/slurm_devinst_scripts/blob/master/make.py), written by Broderick Gardner. It's a great parallel build program designed specifically for Slurm. If you don't want to use it, feel free to just run `make -j install` instead. It will be a lot slower than `make.py`, however. I also use [ccache]([https://github.com/ccache/ccache](https://github.com/ccache/ccache)) to greatly speed up my compile time. Since I compile a lot and it often recompiles code that hasn't changed, `ccache` makes a huge difference to performance. `ccache` plus Broderick's `make.py` has reduced my compile time from 40+ seconds down to less than 10 seconds. Your mileage may vary depending on your hardware.
 
-## How to start Slurm:
+## How to setup Slurm's database:
+This is required before you can run Slurm.
 Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database. Then:
 
     cd ../sbin
@@ -39,13 +40,16 @@ Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/acc
     cd ..
     export SLURM_CONF=`pwd`/etc/slurm.conf
     ./init_db.sh
-    sudo ./start_clusters.sh
 
 This creates 3 clusters in the database named c1, c2, and c3.
 
+## How to Start Slurm:
+
+    sudo ./start_clusters.sh
+
 ## How to Stop Slurm:
 
-    ./stop_clusters.sh
+    sudo ./stop_clusters.sh
 
 ## Running Slurm commands:
 
