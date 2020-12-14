@@ -1,13 +1,21 @@
 #!/bin/bash
-# In slurmdbd.conf and slurm.conf file for each cluster, there are
-# #USER and #VERSION strings. They are used to set SlurmUser and in various
-# file paths.
-# Set user and version here then run this script to replace those in the file.
-# user needs to be the user (with a home directory) who cloned this repo.
-# db_name will be the name of the database.
+
+#
+# EDIT THIS SECTION:
+#
+# Each of these variables appears as "#<option_name>" in various configuration
+# files and startup/shutdown scripts. Each of these variables must be set.
+#
+# user - Name of SlurmUser and used in file paths as the home directory.
 user=marshall
+# version - Slurm version. Used in file paths.
 version=20.02
+# db_name - Name of the database that slurmdbd will create.
 db_name=slurm_2002
+
+#
+# DO NOT EDIT THIS SECTION:
+#
 sed -i "s/#USER/$user/g" etc/slurmdbd.conf
 sed -i "s/#VERSION/$version/g" etc/slurmdbd.conf
 sed -i "s/#DB_NAME/$db_name/g" etc/slurmdbd.conf
