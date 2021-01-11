@@ -12,6 +12,11 @@ user=marshall
 version=20.02
 # db_name - Name of the database that slurmdbd will create.
 db_name=slurm_2002
+# Node hardware:
+memory=8000
+sockets=1
+corespersocket=8
+threadspercore=2
 
 #
 # DO NOT EDIT THIS SECTION:
@@ -26,6 +31,11 @@ sed -i "s/#VERSION/$version/g" stop_clusters.sh
 sed -i "s/#USER/$user/g" init_db.sh
 for i in {1..3}
 do
-	sed -i "s/#USER/$user/g" c$i/etc/slurm.conf
-	sed -i "s/#VERSION/$version/g" c$i/etc/slurm.conf
+	file="c$i/etc/slurm.conf"
+	sed -i "s/#USER/$user/g" $file
+	sed -i "s/#VERSION/$version/g" $file
+	sed -i "s/#MEMORY/$memory/g" $file
+	sed -i "s/#SOCKETS/$sockets/g" $file
+	sed -i "s/#CORES/$corespersocket/g" $file
+	sed -i "s/#THREADS/$threadspercore/g" $file
 done
