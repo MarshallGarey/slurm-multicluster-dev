@@ -33,8 +33,12 @@ I build with [make.py](https://gitlab.com/bsngardner/slurm_devinst_scripts/blob/
 
 ## How to setup Slurm's database:
 This is required before you can run Slurm.
-Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database. Then:
+Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database.
+Change the permissions of the slurmdbd.conf file to 600 (required by Slurm).
+Start slurmdbd, then call init\_db.sh.
 
+    cd ../etc
+    chmod 600 slurmdbd.conf
     cd ../sbin
     ./slurmdbd
     cd ..
