@@ -7,16 +7,16 @@
 # files and startup/shutdown scripts. Each of these variables must be set.
 #
 # user - Name of SlurmUser and used in file paths as the home directory.
-user=marshall
+user=#USER
 # version - Slurm version. Used in file paths.
-version=20.02
+version=#VERSION
 # db_name - Name of the database that slurmdbd will create.
-db_name=slurm_2002
+db_name=#DB_NAME
 # Node hardware:
-memory=8000
-sockets=1
-corespersocket=8
-threadspercore=2
+memory=#MEMORY
+sockets=#SOCKETS
+corespersocket=#CORES
+threadspercore=#THREADS
 
 #
 # DO NOT EDIT THIS SECTION:
