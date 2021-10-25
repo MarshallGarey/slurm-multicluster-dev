@@ -1,6 +1,26 @@
 # README
 This is my multi-cluster/federation environment for Slurm.
 
+## Setup
+### Clone Slurm:
+    cd ~/
+    mkdir slurm
+    cd slurm
+    mkdir master
+    cd master
+    # Clone Slurm
+    git clone git@github.com:SchedMD/slurm.git slurm
+
+### Clone this repo
+    git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
+
+### Initialize everything:
+  * Open init\_conf\_files.sh with your favorite text editor. Set the variables
+at the top of the script.
+  * Run ./setup.sh
+
+The following sections explain how this process works in detail.
+
 ## Slurm Configuration:
 Open init\_conf\_files.sh with your favorite text editor. Set the variables
 user, version, and db\_name, following the guidelines in the script. Then close
