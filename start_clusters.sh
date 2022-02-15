@@ -52,7 +52,7 @@ do
 	i=$(($i+1))
 done
 
-# Start slurmd's
+# Start slurmd's - start them all in parallel
 num_nodes=10
 cluster_inx=1
 while [ $cluster_inx -le $num_clusters ]
@@ -63,8 +63,9 @@ do
 	while [ $node_inx -le $num_nodes ]
 	do
 		echo "Start node n$cluster_inx-$node_inx"
-		sudo $installpath/sbin/slurmd -f $SLURM_CONF -N n$cluster_inx-$node_inx
+		sudo $installpath/sbin/slurmd -f $SLURM_CONF -N n$cluster_inx-$node_inx &
 		node_inx=$(($node_inx+1))
 	done
 	cluster_inx=$(($cluster_inx+1))
 done
+wait
