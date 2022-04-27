@@ -90,18 +90,18 @@ Both arguments are optional but must be specified in this order.
 
 ## Running Slurm commands:
 
-`cd` to the cluster (c1, c2, c3) that you want to run commands from. Set the path to the slurm.conf file of that cluster to the environment variables `SLURM_CONF`. `cd` to `bin` and run any Slurm command. For example, to submit a job from cluster c1:
+`cd` to the `bin` directory in the cluster (c1, c2, c3) that you want to run
+commands from. For example, to submit a job from cluster c1:
 
-    cd c1
-    export SLURM_CONF=`pwd`/etc/slurm.conf
-    cd bin
+    cd c1/bin
     ./srun hostname
 
-Optionally you can add `bin` to the path, then you can run client commands from any directory.
+I like adding the `bin` directory to my path.
 
-    export PATH=`pwd`/bin:$PATH
+    export PATH=`pwd`/c1/bin:$PATH
 
-I simply added these things to a function in my `.bashrc` file called `setups`. Here it is:
+To make life easy, I have a function in my `.bashrc` file to setup the path and
+also take advantage of Slurm's auto-completion script.
 
     #.bashrc
     function setups
