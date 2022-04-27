@@ -6,10 +6,11 @@ This is my multi-cluster/federation environment for Slurm.
     cd ~/
     mkdir slurm
     cd slurm
-    mkdir master
-    cd master
+    mkdir <branch_name>
+    cd <branch_name>
     # Clone Slurm
-    git clone git@github.com:SchedMD/slurm.git slurm
+    # Cloning a single branch is a lot faster
+    git clone --single-branch -b <branch_name> git@github.com:SchedMD/slurm.git slurm
 
 ### Clone this repo
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
