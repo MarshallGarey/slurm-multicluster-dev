@@ -71,7 +71,18 @@ This creates 3 clusters in the database named c1, c2, and c3.
 
 ## How to Start Slurm:
 
-    sudo ./start_clusters.sh
+    sudo ./start_clusters.sh [num_clusters] ['slurmctld_flags']
+
+Arguments:
+* num\_clusters - an integer between 1 and 3 specifying how many clusters to
+		start. It will always start the clusters in the order c1, c2,
+		c3.
+* 'slurmctld\_flags' - flags from
+		     [slurmctld(8)](https://slurm.schedmd.com/slurmctld.html).
+		     Be sure to enclose them in quotes because this is a single
+		     argument.
+
+Both arguments are optional but must be specified in this order.
 
 ## How to Stop Slurm:
 
