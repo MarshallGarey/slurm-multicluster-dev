@@ -114,3 +114,8 @@ also take advantage of Slurm's auto-completion script.
     }
 
 Then I run `setups` from c1, c2, or c3, then run any Slurm client command.
+For example:
+
+    cd c1
+    setups
+    srun hostname
