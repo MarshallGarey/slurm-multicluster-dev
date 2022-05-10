@@ -58,7 +58,7 @@ i=1
 while [ $i -le $num_clusters ]
 do
 	SLURM_CONF="$installpath/c$i/etc/slurm.conf"
-	sudo -u #USER SLURM_CONF=$SLURM_CONF $installpath/sbin/slurmctld -i -f $SLURM_CONF
+	sudo -u #USER $installpath/sbin/slurmctld -f $SLURM_CONF
 	i=$(($i+1))
 done
 
