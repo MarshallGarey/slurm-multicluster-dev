@@ -12,7 +12,16 @@ slurmctld_flags=''
 verbose=0
 
 print_usage() {
-	printf "Usage: ./start_clusters.sh [-c<num_clusters>]\n"
+	printf "\
+Usage: ./start_clusters.sh [-c<num_clusters>] [-h] [-n<num_nodes>]\
+[-o<'slurmctld_flags'>] [-v]
+
+-c: Number of clusters to start. Valid numbers: 1, 2, or 3.
+-h: Print this usage string.
+-n: Number of nodes (slurmd's) to start. Valid numbers: 1-99.
+-o: Flags to pass to slurmctld. Must be surrounded by quotes.
+-v: Print verbose logs.
+"
 }
 
 validate_number() {
@@ -29,14 +38,14 @@ validate_number() {
 	fi
 }
 
-while getopts 'c:n:o:uv' flag
+while getopts 'c:hn:o:uv' flag
 do
 	case "${flag}" in
 		c) num_clusters=${OPTARG} ;;
+		h) print_usage
+		   exit 1 ;;
 		n) num_nodes=${OPTARG} ;;
 		o) slurmctld_flags=${OPTARG} ;;
-		u) print_usage
-		   exit 1 ;;
 		v) verbose=1 ;;
 	esac
 done
