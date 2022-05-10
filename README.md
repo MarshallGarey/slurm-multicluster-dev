@@ -16,8 +16,9 @@ This is my multi-cluster/federation environment for Slurm.
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
 
 ### Initialize everything:
-  * Open init\_conf\_files.sh with your favorite text editor. Set the variables
-at the top of the script.
+  * Open init.conf with your favorite text editor. Set the variables.
+  * [Hook](https://direnv.net/docs/hook.html) direnv to your shell by following
+    the directions on that website.
   * Run ./setup.sh
 
 The following sections explain how this process works in detail.
@@ -90,6 +91,22 @@ Both arguments are optional but must be specified in this order.
 
 ## Running Slurm commands:
 
+### With direnv
+The `bin` directory has all the Slurm commands.
+Hook [direnv](https://direnv.net/) to your shell so that the `bin`. This will
+add the `bin` directory for the appropriate cluster to your path. Then you can
+`cd` to the cluster directory of your choice (`c1`, `c2`, or `c3`) and just run
+a Slurm command:
+
+    cd c1
+    srun hostname
+    cd ../c2
+    srun hostname
+
+If you are in the parent directory (`install`), then it defaults to `c1`.
+
+### Without direnv
+If you don't wish to use direnv, then do the following:
 `cd` to the `bin` directory in the cluster (c1, c2, c3) that you want to run
 commands from. For example, to submit a job from cluster c1:
 
@@ -119,3 +136,26 @@ For example:
     cd c1
     setups
     srun hostname
+
+### Automatically source the auto-completion script
+If you are using `zsh`, then you can use the
+[chpwd function](https://unix.stackexchange.com/a/683600/244332) to source
+the `slurm_completion.sh` file.
+If your shell does nt have `chpwd`, then you can redefine `cd`:
+Add the following to `.bashrc` (or whatever the equivalent is for your shell):
+
+    function chpwd()
+    {
+        if [ -f ../slurm/contribs/slurm_completion_help/slurm_completion.sh ]
+        then
+            source ../slurm/contribs/slurm_completion_help/slurm_completion.sh
+        fi
+    }
+
+    function cd()
+    {
+        builtin cd $@
+        chpwd
+    }
+
+You could also use this as an alternative to direnv and .envrc.
