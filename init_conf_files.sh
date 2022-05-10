@@ -25,4 +25,5 @@ do
 	sed -i "s/#SOCKETS/$sockets/g" $file
 	sed -i "s/#CORES/$corespersocket/g" $file
 	sed -i "s/#THREADS/$threadspercore/g" $file
+	sed -i "s/#PORT/$startingport/g" $file
 done
