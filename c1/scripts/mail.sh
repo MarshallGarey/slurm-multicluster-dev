@@ -1,10 +1,10 @@
 #!/bin/sh
-PREFIX=/home/#USER/slurm/#VERSION/install/c1/
-LOG=$PREFIX/log/mail.log
+prefix=/home/#USER/slurm/#VERSION/install/c1/
+log=$prefix/log/mail.log
 
 # Redirect all stdout and stderr to a log file!
 exec 2>&1
-exec 1>>$LOG
+exec 1>>$log
 
 now=$(date)
 
