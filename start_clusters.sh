@@ -88,7 +88,6 @@ cluster_inx=1
 while [ $cluster_inx -le $num_clusters ]
 do
 	node_inx=1
-	#SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
 	SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
 	while [ $node_inx -le $num_nodes ]
 	do
