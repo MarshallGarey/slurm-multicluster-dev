@@ -7,6 +7,7 @@
 # Restrict number_of_clusters to between 1 and 3, since 1 is the minimum
 # and 3 is how many clusters I have configured, so 3 is the maximum.
 num_clusters=1
+num_nodes=10
 slurmctld_flags=''
 verbose=0
 
@@ -28,10 +29,11 @@ validate_number() {
 	fi
 }
 
-while getopts 'c:o:uv' flag
+while getopts 'c:n:o:uv' flag
 do
 	case "${flag}" in
 		c) num_clusters=${OPTARG} ;;
+		n) num_nodes=${OPTARG} ;;
 		o) slurmctld_flags=${OPTARG} ;;
 		u) print_usage
 		   exit 1 ;;
@@ -42,11 +44,13 @@ done
 if [ $verbose -ne 0 ]
 then
 	echo "num_clusters=$num_clusters"
+	echo "num_nodes=$num_nodes"
 	echo "slurmctld_flags=$slurmctld_flags"
 fi
 
-# Validate num_clusters
+# Validate options
 validate_number $num_clusters 1 3 "-c"
+validate_number $num_nodes 1 99 "-n"
 
 # Ensure that we have sudo privileges
 sudo -v
@@ -80,7 +84,6 @@ do
 done
 
 # Start slurmd's - start them all in parallel
-num_nodes=10
 cluster_inx=1
 while [ $cluster_inx -le $num_clusters ]
 do
