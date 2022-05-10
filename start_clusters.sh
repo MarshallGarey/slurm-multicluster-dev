@@ -8,25 +8,30 @@
 # and 3 is how many clusters I have configured, so 3 is the maximum.
 num_clusters=1
 slurmctld_flags=''
+verbose=0
 
 print_usage() {
 	printf "Usage: ./start_clusters.sh [-c<num_clusters>]\n"
 }
 
-while getopts 'c:o:u' flag
+while getopts 'c:o:uv' flag
 do
 	case "${flag}" in
 		c) num_clusters=${OPTARG} ;;
 		o) slurmctld_flags=${OPTARG} ;;
 		u) print_usage
 		   exit 1 ;;
+		v) verbose=1 ;;
 	esac
 done
 
-# Validate num_clusters
-echo "num_clusters=$num_clusters"
-echo "slurmctld_flags=$slurmctld_flags"
+if [ $verbose -ne 0 ]
+then
+	echo "num_clusters=$num_clusters"
+	echo "slurmctld_flags=$slurmctld_flags"
+fi
 
+# Validate num_clusters
 is_not_num_regex='[^0-9]+'
 if [[ $num_clusters =~ $is_not_num_regex || $num_clusters -ge 4 || $num_clusters -le 0 ]]
 then
