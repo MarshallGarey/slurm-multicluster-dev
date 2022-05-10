@@ -70,6 +70,8 @@ else
 	echo "Starting clusters c[1-$num_clusters]"
 fi
 
+sudo ./stop_clusters
+
 # Start slurmdbd
 sudo -u #USER $installpath/sbin/slurmdbd
 sleep 1
