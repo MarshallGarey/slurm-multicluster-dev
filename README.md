@@ -2,17 +2,13 @@
 This is my multi-cluster/federation environment for Slurm.
 
 ## Setup
-### Clone Slurm:
-    cd ~/
-    mkdir slurm
-    cd slurm
-    mkdir <branch_name>
-    cd <branch_name>
-    # Clone Slurm
-    # Cloning a single branch is a lot faster
-    git clone --single-branch -b <branch_name> git@github.com:SchedMD/slurm.git slurm
+Create a directory for this repository:
+
+`/home/username/slurm/dir_name/`
 
 ### Clone this repo
+Clone this repository inside of the directory that was just created:
+
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
 
 ### Initialize everything:

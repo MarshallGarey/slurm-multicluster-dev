@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# Build and install Slurm
+# Clone, then build and install Slurm
+git clone --single-branch -b #BRANCH git@github.com:SchedMD/slurm.git ../slurm
 mkdir build lib
 cd build
 ../../slurm/configure --prefix=/home/#USER/slurm/#VERSION/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/#USER/slurm/#VERSION/install/lib

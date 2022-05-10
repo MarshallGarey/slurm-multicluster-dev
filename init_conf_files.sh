@@ -10,6 +10,7 @@ sed -i "s/#USER/$user/g" start_clusters.sh
 sed -i "s/#USER/$user/g" stop_clusters.sh
 sed -i "s/#VERSION/$version/g" start_clusters.sh
 sed -i "s/#VERSION/$version/g" stop_clusters.sh
+sed -i "s/#BRANCH/$branch_name/g" init.sh
 sed -i "s/#USER/$user/g" init_db.sh
 sed -i "s/#USER/$user/g" setup_bin.sh
 sed -i "s/#VERSION/$version/g" setup_bin.sh
