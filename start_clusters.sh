@@ -7,15 +7,17 @@
 # Restrict number_of_clusters to between 1 and 3, since 1 is the minimum
 # and 3 is how many clusters I have configured, so 3 is the maximum.
 num_clusters=1
+slurmctld_flags=''
 
 print_usage() {
 	printf "Usage: ./start_clusters.sh [-c<num_clusters>]\n"
 }
 
-while getopts 'c:u' flag
+while getopts 'c:o:u' flag
 do
 	case "${flag}" in
 		c) num_clusters=${OPTARG} ;;
+		o) slurmctld_flags=${OPTARG} ;;
 		u) print_usage
 		   exit 1 ;;
 	esac
@@ -23,6 +25,7 @@ done
 
 # Validate num_clusters
 echo "num_clusters=$num_clusters"
+echo "slurmctld_flags=$slurmctld_flags"
 
 is_not_num_regex='[^0-9]+'
 if [[ $num_clusters =~ $is_not_num_regex || $num_clusters -ge 4 || $num_clusters -le 0 ]]
@@ -58,7 +61,7 @@ i=1
 while [ $i -le $num_clusters ]
 do
 	SLURM_CONF="$installpath/c$i/etc/slurm.conf"
-	sudo -u #USER $installpath/sbin/slurmctld -f $SLURM_CONF
+	sudo -u #USER $installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
 	i=$(($i+1))
 done
 
