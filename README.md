@@ -1,5 +1,6 @@
 # README
-This is my multi-cluster/federation environment for Slurm.
+This is my development environment for Slurm. It sets up an environment to run
+three clusters in Slurm.
 
 ## Setup
 Create a directory for this repository:
@@ -17,9 +18,10 @@ Clone this repository inside of the directory that was just created:
     the directions on that website.
   * Run ./setup.sh
 
+That's all you need to do!
 The following sections explain how this process works in detail.
 
-## Slurm Configuration:
+#### Slurm Configuration:
 Open init\_conf\_files.sh with your favorite text editor. Set the variables
 user, version, and db\_name, following the guidelines in the script. Then close
 this file and run it. This will ensure the various scripts and configurations
@@ -29,7 +31,7 @@ SlurmctldPort, AccountingStoragePort, and the ports for the nodes if these
 ports are already being used. TODO: Make a way to change these ports with
 init\_conf\_files.sh.
 
-## How to build:
+#### How to build:
 Assuming your Slurm version is "master":
 
     cd ~/
@@ -50,7 +52,7 @@ Assuming your Slurm version is "master":
 
 I build with [make.py](https://gitlab.com/bsngardner/slurm_devinst_scripts/blob/master/make.py), written by Broderick Gardner. It's a great parallel build program designed specifically for Slurm. If you don't want to use it, feel free to just run `make -j install` instead. It will be a lot slower than `make.py`, however. I also use [ccache]([https://github.com/ccache/ccache](https://github.com/ccache/ccache)) to greatly speed up my compile time. Since I compile a lot and it often recompiles code that hasn't changed, `ccache` makes a huge difference to performance. `ccache` plus Broderick's `make.py` has reduced my compile time from 40+ seconds down to less than 10 seconds. Your mileage may vary depending on your hardware.
 
-## How to setup Slurm's database:
+#### How to setup Slurm's database:
 This is required before you can run Slurm.
 Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database.
 Change the permissions of the slurmdbd.conf file to 600 (required by Slurm).
