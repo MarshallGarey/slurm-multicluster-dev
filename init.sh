@@ -14,6 +14,7 @@ cd ..
 ./setup_bin.sh
 
 # Setup database
+mkdir archive
 export SLURM_CONF=`pwd`/etc/slurm.conf
 chmod 600 etc/slurmdbd.conf
 ./sbin/slurmdbd
