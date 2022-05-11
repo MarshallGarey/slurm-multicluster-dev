@@ -27,4 +27,7 @@ do
 	sed -i "s/#CORES/$corespersocket/g" $file
 	sed -i "s/#THREADS/$threadspercore/g" $file
 	sed -i "s/#PORT/$startingport/g" $file
+	file="c$i/etc/helpers.conf"
+	sed -i "s/#USER/$user/g" $file
+	sed -i "s/#VERSION/$version/g" $file
 done
