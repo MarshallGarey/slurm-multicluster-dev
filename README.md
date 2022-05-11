@@ -14,8 +14,10 @@ Clone this repository inside of the directory that was just created:
 
 ### Initialize everything:
   * Open init.conf with your favorite text editor. Set the variables.
-  * [Hook](https://direnv.net/docs/hook.html) direnv to your shell by following
-    the directions on that website.
+  * (Optional) Install [direnv](https://direnv.net/):
+    * Install direnv with a package manager (e.g. sudo apt install direnv).
+    * [Hook](https://direnv.net/docs/hook.html) direnv to your shell by
+      following the directions on that website.
   * Run ./setup.sh
 
 That's all you need to do!
