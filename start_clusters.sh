@@ -13,7 +13,7 @@ verbose=0
 
 print_usage() {
 	printf "\
-Usage: ./start_clusters.sh [-c<num_clusters>] [-h] [-n<num_nodes>]\
+Usage: ./start_clusters.sh [-c<num_clusters>] [-h] [-n<num_nodes>] \
 [-o<'slurmctld_flags'>] [-v]
 
 -c: Number of clusters to start. Valid numbers: 1, 2, or 3.
