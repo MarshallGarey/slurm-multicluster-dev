@@ -6,6 +6,7 @@ source init.conf
 sed -i "s/#USER/$user/g" etc/slurmdbd.conf
 sed -i "s/#VERSION/$version/g" etc/slurmdbd.conf
 sed -i "s/#DB_NAME/$db_name/g" etc/slurmdbd.conf
+sed -i "s/#PORT/$startingport/g" etc/slurmdbd.conf
 sed -i "s/#USER/$user/g" start_clusters.sh
 sed -i "s/#USER/$user/g" stop_clusters.sh
 sed -i "s/#VERSION/$version/g" start_clusters.sh
