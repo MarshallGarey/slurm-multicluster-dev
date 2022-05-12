@@ -24,35 +24,29 @@ That's all you need to do!
 The following sections explain how this process works in detail.
 
 #### Slurm Configuration:
-Open init\_conf\_files.sh with your favorite text editor. Set the variables
-user, version, and db\_name, following the guidelines in the script. Then close
-this file and run it. This will ensure the various scripts and configurations
-files have the correct username, file paths, and database name.
-Note: This doesn't change the ports. You will have to manually change
-SlurmctldPort, AccountingStoragePort, and the ports for the nodes if these
-ports are already being used. TODO: Make a way to change these ports with
-init\_conf\_files.sh.
+Open init.conf with your favorite text editor. Set the variables.
+These values will be placed in various by init\_conf\_files.sh.
+init.sh will clone Slurm in the parent directory of this repository.
 
 #### How to build:
 Assuming your Slurm version is "master":
 
-    cd ~/
-    mkdir slurm
-    cd slurm
-    mkdir master
-    cd master
-    # Clone Slurm
-    git clone git@github.com:SchedMD/slurm.git slurm
-    # Clone this repo
-    git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
-    # Build and install Slurm
-    mkdir install/build install/lib
-    cd install/build
+    cd build
     ../../slurm/configure --prefix=/home/marshall/slurm/master/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/marshall/slurm/master/install/lib
     make.py --with-all
+    cd ..
     ./setup_bin.sh
 
-I build with [make.py](https://gitlab.com/bsngardner/slurm_devinst_scripts/blob/master/make.py), written by Broderick Gardner. It's a great parallel build program designed specifically for Slurm. If you don't want to use it, feel free to just run `make -j install` instead. It will be a lot slower than `make.py`, however. I also use [ccache]([https://github.com/ccache/ccache](https://github.com/ccache/ccache)) to greatly speed up my compile time. Since I compile a lot and it often recompiles code that hasn't changed, `ccache` makes a huge difference to performance. `ccache` plus Broderick's `make.py` has reduced my compile time from 40+ seconds down to less than 10 seconds. Your mileage may vary depending on your hardware.
+I build with
+[make.py](https://gitlab.com/bsngardner/slurm_devinst_scripts/blob/master/make.py),
+written by Broderick Gardner. It's a great parallel build program designed
+specifically for Slurm. If you don't want to use it, feel free to just run
+`make -j install` instead. It will be a lot slower than `make.py`, however. I
+also use
+[ccache]([https://github.com/ccache/ccache](https://github.com/ccache/ccache))
+to greatly speed up my compile time. Since I compile a lot and it often
+recompiles code that hasn't changed, `ccache` makes a huge difference to
+performance.
 
 #### How to setup Slurm's database:
 This is required before you can run Slurm.
@@ -60,11 +54,10 @@ Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/acc
 Change the permissions of the slurmdbd.conf file to 600 (required by Slurm).
 Start slurmdbd, then call init\_db.sh.
 
-    cd ../etc
-    chmod 600 slurmdbd.conf
-    cd ../sbin
-    ./slurmdbd
-    cd ..
+    # cd to the base of this repository
+    mkdir archive
+    chmod 600 etc/slurmdbd.conf
+    ./sbin/slurmdbd
     export SLURM_CONF=`pwd`/etc/slurm.conf
     ./init_db.sh
 
@@ -74,16 +67,8 @@ This creates 3 clusters in the database named c1, c2, and c3.
 
     sudo ./start_clusters.sh [num_clusters] ['slurmctld_flags']
 
-Arguments:
-* num\_clusters - an integer between 1 and 3 specifying how many clusters to
-		start. It will always start the clusters in the order c1, c2,
-		c3.
-* 'slurmctld\_flags' - flags from
-		     [slurmctld(8)](https://slurm.schedmd.com/slurmctld.html).
-		     Be sure to enclose them in quotes because this is a single
-		     argument.
-
-Both arguments are optional but must be specified in this order.
+The help/usage (./start\_clusters.sh -h) displays all the arguments.
+This script calls ./stop\_clusters.sh first, then starts the Slurm daemons.
 
 ## How to Stop Slurm:
 
