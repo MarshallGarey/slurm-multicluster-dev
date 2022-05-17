@@ -30,4 +30,9 @@ do
 	file="c$i/etc/helpers.conf"
 	sed -i "s/#USER/$user/g" $file
 	sed -i "s/#VERSION/$version/g" $file
+	for f in c$i/scripts/*
+	do
+		sed -i "s/#USER/$user/g" $f
+		sed -i "s/#VERSION/$version/g" $f
+	done
 done
