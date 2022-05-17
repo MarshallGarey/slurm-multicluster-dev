@@ -5,10 +5,15 @@ git clone --single-branch -b #BRANCH git@github.com:SchedMD/slurm.git ../slurm
 mkdir build lib
 cd build
 ../../slurm/configure --prefix=/home/#USER/slurm/#VERSION/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/#USER/slurm/#VERSION/install/lib
-# Install: first get make.py, then make.
-wget https://gitlab.com/SchedMD/support/scripts/-/raw/master/make.py
-chmod 775 make.py
-./make.py --with-all
+# Build and install
+makeme=$(which make.py)
+rc=$?
+if [ $rc -ne 0 ]
+then
+	make -j install
+else
+	$makeme --with-all
+fi
 # Setup bin directories for each cluster
 cd ..
 ./setup_bin.sh

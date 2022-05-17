@@ -18,6 +18,8 @@ Clone this repository inside of the directory that was just created:
     * Install direnv with a package manager (e.g. sudo apt install direnv).
     * [Hook](https://direnv.net/docs/hook.html) direnv to your shell by
       following the directions on that website.
+  * (Optional) Download [make.py](https://gitlab.com/SchedMD/support/scripts/-/raw/master/make.py)
+    and add it to your path. `make.py` builds Slurm a lot faster than `make -j`.
   * Run ./setup.sh
 
 That's all you need to do!
