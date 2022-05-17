@@ -40,7 +40,7 @@ Assuming your Slurm version is "master":
     ./setup_bin.sh
 
 I build with
-[make.py](https://gitlab.com/bsngardner/slurm_devinst_scripts/blob/master/make.py),
+[make.py](https://gitlab.com/SchedMD/support/scripts/-/raw/master/make.py),
 written by Broderick Gardner. It's a great parallel build program designed
 specifically for Slurm. If you don't want to use it, feel free to just run
 `make -j install` instead. It will be a lot slower than `make.py`, however. I
