@@ -110,7 +110,7 @@ end
 --]]
 function slurm_bb_pools()
 
-	slurm.log_info("%s: slurm_bb_pools().", lua_script_name)
+	--slurm.log_info("%s: slurm_bb_pools().", lua_script_name)
 
 	--This commented out code specifies pools in a file:
 	--local pools_file, pools
