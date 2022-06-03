@@ -67,7 +67,7 @@ This creates 3 clusters in the database named c1, c2, and c3.
 
 ## How to Start Slurm:
 
-    sudo ./start_clusters.sh [num_clusters] ['slurmctld_flags']
+    sudo ./start_clusters.sh [desired_flags]
 
 The help/usage (./start\_clusters.sh -h) displays all the arguments.
 This script calls ./stop\_clusters.sh first, then starts the Slurm daemons.
@@ -128,7 +128,7 @@ For example:
 If you are using `zsh`, then you can use the
 [chpwd function](https://unix.stackexchange.com/a/683600/244332) to source
 the `slurm_completion.sh` file.
-If your shell does nt have `chpwd`, then you can redefine `cd`:
+If your shell doesn't have `chpwd`, then you can redefine `cd`:
 Add the following to `.bashrc` (or whatever the equivalent is for your shell):
 
     function chpwd()
@@ -144,5 +144,9 @@ Add the following to `.bashrc` (or whatever the equivalent is for your shell):
         builtin cd $@
         chpwd
     }
+    # Now cd to the current directory to force the custom cd function to happen
+    # when a new shell is created.
+    cd .
+
 
 You could also use this as an alternative to direnv and .envrc.
