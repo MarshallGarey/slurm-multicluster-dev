@@ -4,7 +4,7 @@
 git clone --single-branch -b #BRANCH git@github.com:SchedMD/slurm.git ../slurm
 mkdir build lib
 cd build
-../../slurm/configure --prefix=/home/#USER/slurm/#VERSION/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/#USER/slurm/#VERSION/install/lib
+../../slurm/configure --prefix=/home/#USER/slurm/#REPO_DIR/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/#USER/slurm/#REPO_DIR/install/lib
 # Build and install
 makeme=$(which make.py)
 rc=$?
@@ -20,7 +20,7 @@ cd ..
 
 # Setup testsuite
 printf '# globals.local
-set base "/home/#USER/slurm/#VERSION"
+set base "/home/#USER/slurm/#REPO_DIR"
 set slurm_dir "${base}/install"
 set build_dir "${slurm_dir}/build"
 #set testsuite_log_level $LOG_LEVEL_TRACE

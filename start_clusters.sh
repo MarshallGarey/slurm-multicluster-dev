@@ -70,7 +70,7 @@ then
 	exit 1
 fi
 
-installpath="/home/#USER/slurm/#VERSION/install"
+installpath="/home/#USER/slurm/#REPO_DIR/install"
 
 if [ $num_clusters -eq 1 ]
 then

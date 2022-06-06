@@ -9,7 +9,7 @@ then
 	exit 1
 fi
 
-basepath="/home/#USER/slurm/#VERSION/install"
+basepath="/home/#USER/slurm/#REPO_DIR/install"
 echo "stopping clusters c1, c2, c3, base=$basepath"
 
 # Are there any files in the directory (i.e., daemons are running)?

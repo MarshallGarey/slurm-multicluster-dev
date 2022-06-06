@@ -3,7 +3,7 @@
 #echo "hf2"
 
 
-helpers_variable_file=/home/#USER/slurm/#VERSION/install/c3/scripts/helpers_variables
+helpers_variable_file=/home/#USER/slurm/#REPO_DIR/install/c3/scripts/helpers_variables
 touch $helpers_variable_file
 if [ -n \"$1\" ]; then
 	echo $1 > $helpers_variable_file

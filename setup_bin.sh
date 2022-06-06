@@ -1,5 +1,5 @@
 #!/bin/sh
-slurm_path='/home/#USER/slurm/#VERSION/install'
+slurm_path='/home/#USER/slurm/#REPO_DIR/install'
 i=1
 while [ $i -le 3 ]
 do

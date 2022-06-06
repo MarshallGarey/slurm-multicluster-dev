@@ -31,7 +31,7 @@ These values will be placed in various by init\_conf\_files.sh.
 init.sh will clone Slurm in the parent directory of this repository.
 
 #### How to build:
-Assuming your Slurm version is "master":
+Assuming the parent directory of this repository is "master":
 
     cd build
     ../../slurm/configure --prefix=/home/marshall/slurm/master/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/marshall/slurm/master/install/lib

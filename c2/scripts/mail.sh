@@ -1,5 +1,5 @@
 #!/bin/sh
-prefix=/home/#USER/slurm/#VERSION/install/c2/
+prefix=/home/#USER/slurm/#REPO_DIR/install/c2/
 log=$prefix/log/mail.log
 
 # Redirect all stdout and stderr to a log file!

@@ -1,5 +1,5 @@
 #!/bin/sh
-log=/home/#USER/slurm/#VERSION/install/c2/log/healthcheck.log
+log=/home/#USER/slurm/#REPO_DIR/install/c2/log/healthcheck.log
 
 # Redirect all output to a file.
 exec 2>&1
