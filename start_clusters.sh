@@ -1,11 +1,7 @@
 #!/bin/bash
 # start_clusters.sh
 # Startup script for Slurm
-# Usage:
-#  ./start_clusters.sh [<number_of_clusters>]
-# number_of_clusters is optional. If not given, then 1 cluster will start.
-# Restrict number_of_clusters to between 1 and 3, since 1 is the minimum
-# and 3 is how many clusters I have configured, so 3 is the maximum.
+# Print usage with ./start_clusters -h
 num_clusters=1
 num_nodes=10
 slurmctld_flags=''
