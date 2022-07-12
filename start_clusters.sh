@@ -108,4 +108,3 @@ do
 	done
 	cluster_inx=$(($cluster_inx+1))
 done
-wait
