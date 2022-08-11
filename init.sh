@@ -46,10 +46,10 @@ done
 
 # Setup database
 mkdir -p archive
-export SLURM_CONF=`pwd`/etc/slurm.conf
+export SLURM_CONF=$(pwd)/etc/slurm.conf
 chmod 600 etc/slurmdbd.conf
 ./sbin/slurmdbd
 sleep 2 # Wait for slurmdbd to start
 ./init_db.sh
 # Kill slurmdbd
-kill `cat run/slurmdbd.pid`
+kill $(cat run/slurmdbd.pid)
