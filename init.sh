@@ -2,7 +2,7 @@
 
 # Clone, then build and install Slurm
 git clone --single-branch -b #BRANCH git@github.com:SchedMD/slurm.git ../slurm
-mkdir build lib
+mkdir -p build lib
 cd build
 ../../slurm/configure --prefix=/home/#USER/slurm/#REPO_DIR/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/#USER/slurm/#REPO_DIR/install/lib
 # Build and install
@@ -45,7 +45,7 @@ do
 done
 
 # Setup database
-mkdir archive
+mkdir -p archive
 export SLURM_CONF=`pwd`/etc/slurm.conf
 chmod 600 etc/slurmdbd.conf
 ./sbin/slurmdbd
