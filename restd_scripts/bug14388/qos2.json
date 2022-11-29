@@ -1,0 +1,11 @@
+{
+  "QOS": [
+    {
+      "flags": [ "DENY_LIMIT", "OVERRIDE_PARTITION_QOS", "PARTITION_TIME_LIMIT", "NO_RESERVE" ],
+      "name": "low",
+      "preempt": {
+        "mode": [ "SUSPEND", "REQUEUE" ]
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 #!/bin/bash
-SLURM_PATH="/home/marshall/slurm-local/master/install"
+SLURM_PATH="/home/marshall/slurm-local/22.05/install"
 
 if [ $# -ne 0 ]
 then

@@ -1,0 +1,54 @@
+{
+  "associations": [
+    {
+      "account": "acct2",
+      "cluster": "c1",
+      "flags": [
+        "DEFAULT"
+      ],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": 100,
+            "accruing": 5,
+            "submitted": 100,
+            "wall_clock": 4294967295
+          },
+          "active": 100,
+          "accruing": 2,
+          "total": 100
+        },
+        "tres": {
+          "total": [],
+          "minutes": {
+            "per": {
+              "job": []
+            },
+            "total": []
+          },
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": 4294967295
+          }
+        }
+      },
+      "is_default": 0,
+      "partition": null,
+      "qos": [
+        { "name": "normal" },
+        { "name": "low" }
+      ],
+      "shares_raw": 1,
+      "user": "marshall"
+    }
+  ]
+}

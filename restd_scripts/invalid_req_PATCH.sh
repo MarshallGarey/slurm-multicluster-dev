@@ -1,5 +1,5 @@
 #!/bin/bash
-SLURM_PATH="/home/marshall/slurm-local/master/install"
+SLURM_PATH="/home/marshall/slurm-local/22.05/install"
 curl -o "$SLURM_PATH/c1/log/curl.log" -k -s -v \
 	--request PATCH \
 	-H X-SLURM-USER-NAME:$(whoami) \

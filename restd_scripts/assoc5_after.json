@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi\/dbv0.0.38",
+      "name": "Slurm OpenAPI DB v0.0.38"
+    },
+    "Slurm": {
+      "version": {
+        "major": 22,
+        "micro": 5,
+        "minor": 5
+      },
+      "release": "22.05.5"
+    }
+  },
+  "errors": [
+  ],
+  "associations": [
+    {
+      "account": "acct1_sub",
+      "cluster": "c1",
+      "default": {
+        "qos": "low"
+      },
+      "flags": [
+      ],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": 15,
+            "accruing": 3,
+            "submitted": 32,
+            "wall_clock": 5454
+          },
+          "active": 26,
+          "accruing": 7,
+          "total": 55
+        },
+        "tres": {
+          "total": [
+            {
+              "type": "cpu",
+              "name": null,
+              "id": 1,
+              "count": 42
+            },
+            {
+              "type": "gres",
+              "name": "gpu:tty1",
+              "id": 1005,
+              "count": 2
+            }
+          ],
+          "minutes": {
+            "per": {
+              "job": [
+                {
+                  "type": "cpu",
+                  "name": null,
+                  "id": 1,
+                  "count": 3232
+                },
+                {
+                  "type": "gres",
+                  "name": "gpu:tty1",
+                  "id": 1005,
+                  "count": 99
+                }
+              ]
+            },
+            "total": [
+            ]
+          },
+          "group": {
+            "minutes": [
+              {
+                "type": "cpu",
+                "name": null,
+                "id": 1,
+                "count": 12345
+              },
+              {
+                "type": "gres",
+                "name": "gpu:tty1",
+                "id": 1005,
+                "count": 38
+              }
+            ],
+            "active": [
+              {
+                "type": "cpu",
+                "name": null,
+                "id": 1,
+                "count": 7787
+              },
+              {
+                "type": "gres",
+                "name": "gpu:tty1",
+                "id": 1005,
+                "count": 30
+              }
+            ]
+          },
+          "per": {
+            "job": [
+              {
+                "type": "cpu",
+                "name": null,
+                "id": 1,
+                "count": 18
+              },
+              {
+                "type": "gres",
+                "name": "gpu:tty1",
+                "id": 1005,
+                "count": 3
+              }
+            ],
+            "node": [
+              {
+                "type": "cpu",
+                "name": null,
+                "id": 1,
+                "count": 9
+              },
+              {
+                "type": "gres",
+                "name": "gpu:tty1",
+                "id": 1005,
+                "count": 3
+              }
+            ]
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": 30000
+          }
+        }
+      },
+      "is_default": 0,
+      "min": {
+        "priority_threshold": 4045
+      },
+      "parent_account": null,
+      "partition": "debug",
+      "priority": 567,
+      "qos": [
+        "low",
+        "normal"
+      ],
+      "shares_raw": 10,
+      "usage": null,
+      "user": "marshall"
+    }
+  ]
+}

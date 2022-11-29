@@ -1,0 +1,88 @@
+{
+  "QOS": [
+    {
+      "description": "QOS for jobs not using an allocation",
+      "flags": [ "DENY_LIMIT", "NO_RESERVE" ],
+      "limits": {
+        "grace_time": 60,
+        "max": {
+          "active_jobs": {
+            "accruing": 0,
+            "count": 0
+          },
+          "tres": {
+            "total": [
+              {
+                "type": "cpu",
+                "name": null,
+                "id": 1,
+                "count": 100000
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 100000
+              }
+            ],
+            "minutes": {
+              "per": {
+                "qos": [],
+                "job": [],
+                "account": [],
+                "user": []
+              }
+            },
+            "per": {
+              "account": [],
+              "job": [],
+              "node": [],
+              "user": []
+            }
+          },
+          "wall_clock": {
+            "per": {
+              "qos": 0,
+              "job": 0
+            }
+          },
+          "jobs": {
+            "active_jobs": {
+              "per": {
+                "account": 0,
+                "user": 0
+              }
+            },
+            "per": {
+              "account": 0,
+              "user": 0
+            }
+          },
+          "accruing": {
+            "per": {
+              "account": 0,
+              "user": 0
+            }
+          }
+        },
+        "factor": null,
+        "min": {
+          "priority_threshold": 0,
+          "tres": {
+            "per": {
+              "job": []
+            }
+          }
+        }
+      },
+      "name": "low",
+      "preempt": {
+        "mode": [ "REQUEUE", "GANG" ],
+        "exempt_time": 80000
+      },
+      "priority": 10,
+      "usage_factor": 1,
+      "usage_threshold": null
+    }
+  ]
+}

@@ -1,2 +1,2 @@
 #!/bin/bash
-/home/marshall/slurm/master/install/c1/bin/srun sleep 60
+/home/marshall/slurm/22.05/install/c1/bin/srun sleep 60

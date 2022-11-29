@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi\/dbv0.0.38",
+      "name": "Slurm OpenAPI DB v0.0.38"
+    },
+    "Slurm": {
+      "version": {
+        "major": 22,
+        "micro": 5,
+        "minor": 5
+      },
+      "release": "22.05.5"
+    }
+  },
+  "errors": [
+  ],
+  "associations": [
+    {
+      "account": "acct1",
+      "cluster": "c1",
+      "default": {
+        "qos": null
+      },
+      "flags": [
+        "DEFAULT"
+      ],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": null,
+            "accruing": null,
+            "submitted": null,
+            "wall_clock": null
+          },
+          "active": null,
+          "accruing": null,
+          "total": null
+        },
+        "tres": {
+          "total": [
+          ],
+          "minutes": {
+            "per": {
+              "job": [
+              ]
+            },
+            "total": [
+            ]
+          },
+          "group": {
+            "minutes": [
+            ],
+            "active": [
+            ]
+          },
+          "per": {
+            "job": [
+            ],
+            "node": [
+            ]
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": null
+          }
+        }
+      },
+      "is_default": 1,
+      "min": {
+        "priority_threshold": null
+      },
+      "parent_account": null,
+      "partition": null,
+      "priority": null,
+      "qos": [
+        "normal"
+      ],
+      "shares_raw": 1,
+      "user": "marshall"
+    }
+  ]
+}
