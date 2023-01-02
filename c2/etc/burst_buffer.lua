@@ -1,1 +1,0 @@
-../../c1/etc/burst_buffer.lua

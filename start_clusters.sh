@@ -66,7 +66,7 @@ then
 	exit 1
 fi
 
-installpath="/home/#USER/slurm/#REPO_DIR/install"
+installpath="#INSTALL_PATH"
 
 if [ $num_clusters -eq 1 ]
 then
@@ -78,7 +78,7 @@ fi
 sudo ./stop_clusters.sh
 
 # Start slurmdbd
-sudo -u #USER $installpath/sbin/slurmdbd
+sudo -u #SLURM_USER $installpath/sbin/slurmdbd
 sleep 1
 
 # Start slurmctld's
@@ -86,7 +86,7 @@ i=1
 while [ $i -le $num_clusters ]
 do
 	SLURM_CONF="$installpath/c$i/etc/slurm.conf"
-	sudo -u #USER $installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
+	sudo -u #SLURM_USER $installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
 	i=$(($i+1))
 done
 
@@ -98,8 +98,11 @@ do
 	SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
 	while [ $node_inx -le $num_nodes ]
 	do
-		echo "Start node n$cluster_inx-$node_inx"
-		sudo $installpath/sbin/slurmd -f $SLURM_CONF -N n$cluster_inx-$node_inx &
+		nodename="n${cluster_inx}-${node_inx}"
+		echo "Start node ${nodename}"
+		export NODE_NAME=${nodename}
+		sudo --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N ${nodename} &
+
 		node_inx=$(($node_inx+1))
 	done
 	cluster_inx=$(($cluster_inx+1))
