@@ -106,17 +106,6 @@ set testsuite_cleanup_on_failure false
 #set fedc3 \"c3\"
 " > ../slurm/testsuite/expect/globals.local
 
-# Fix file permissions on scripts because I messed up when I originall
-# made the scripts.
-#i=1
-#while [ $i -le 3 ]
-#do
-#	chmod 700 c$i/scripts/resumeprog.sh
-#	chmod 700 c$i/scripts/resumefailprog.sh
-#	chmod 700 c$i/scripts/suspendprog.sh
-#	i=$(($i+1))
-#done
-
 # Setup database
 mkdir -p archive
 export SLURM_CONF="${install_path}/etc/slurm.conf"
