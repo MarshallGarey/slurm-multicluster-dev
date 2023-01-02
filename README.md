@@ -3,41 +3,27 @@ This is my development environment for Slurm. It sets up an environment to run
 three clusters in Slurm.
 
 ## Setup
-Create a directory for this repository:
+Create a directory for this repository. For example:
 
 `/home/username/slurm/dir_name/`
 
 ### Clone this repo
-Clone this repository inside of the directory that was just created:
+Clone this repository inside of the directory that was just created, and name
+this repository "install":
 
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
 
 ### Initialize everything:
-  * Open init.conf with your favorite text editor. Set the variables.
+  * Open init.conf. Set the variables.
   * (Optional) Install [direnv](https://direnv.net/):
     * Install direnv with a package manager (e.g. sudo apt install direnv).
     * [Hook](https://direnv.net/docs/hook.html) direnv to your shell by
       following the directions on that website.
   * (Optional) Download [make.py](https://gitlab.com/SchedMD/support/scripts/-/raw/master/make.py)
     and add it to your path. `make.py` builds Slurm a lot faster than `make -j`.
-  * Run ./setup.sh
+  * Run ./init.sh
 
-That's all you need to do!
-The following sections explain how this process works in detail.
-
-#### Slurm Configuration:
-Open init.conf with your favorite text editor. Set the variables.
-These values will be placed in various by init\_conf\_files.sh.
-init.sh will clone Slurm in the parent directory of this repository.
-
-#### How to build:
-Assuming the parent directory of this repository is "master":
-
-    cd build
-    ../../slurm/configure --prefix=/home/marshall/slurm/master/install --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir=/home/marshall/slurm/master/install/lib
-    make.py --with-all
-    cd ..
-    ./setup_bin.sh
+### Tools to speed up compilation
 
 I build with
 [make.py](https://gitlab.com/SchedMD/support/scripts/-/raw/master/make.py),
@@ -46,24 +32,22 @@ specifically for Slurm. If you don't want to use it, feel free to just run
 `make -j install` instead. It will be a lot slower than `make.py`, however. I
 also use
 [ccache]([https://github.com/ccache/ccache](https://github.com/ccache/ccache))
-to greatly speed up my compile time. Since I compile a lot and it often
-recompiles code that hasn't changed, `ccache` makes a huge difference to
-performance.
+to speed up compilation.
 
 #### How to setup Slurm's database:
 This is required before you can run Slurm.
 Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database.
 Change the permissions of the slurmdbd.conf file to 600 (required by Slurm).
-Start slurmdbd, then call init\_db.sh.
+Start slurmdbd, then add clusters, desired accounts, and desired users.
 
     # cd to the base of this repository
     mkdir archive
     chmod 600 etc/slurmdbd.conf
     ./sbin/slurmdbd
     export SLURM_CONF=`pwd`/etc/slurm.conf
-    ./init_db.sh
-
-This creates 3 clusters in the database named c1, c2, and c3.
+    sacctmgr add cluster c1 c2 c3
+    sacctmgr add account acct1
+    sacctmgr add user ${slurm_user} account=acct1
 
 ## How to Start Slurm:
 
