@@ -65,7 +65,8 @@ do
 	j=0
 
 	cd "${install_path}"
-	cp -r tmpetc c${i}/etc
+	cp -r tmpetc c${i}/
+	mv c${i}/tmpetc c${i}/etc
 	cd "${install_path}/c${i}/etc"
 
 	while [ ${j} -lt ${len} ]
@@ -78,7 +79,8 @@ do
 	done
 
 	cd "${install_path}"
-	cp -r tmpscripts c${i}/scripts
+	cp -r tmpscripts c${i}/
+	mv c${i}/tmpscripts c${i}/scripts
 	cd "${install_path}/c${i}/scripts"
 	for file in $(grep -d skip -l "#INSTALL_PATH" *)
 	do
