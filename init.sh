@@ -107,6 +107,7 @@ set testsuite_cleanup_on_failure false
 #set fedc2 \"c2\"
 #set fedc3 \"c3\"
 " > ../slurm/testsuite/expect/globals.local
+cp build/testsuite/testsuite.conf.sample ../slurm/testsuite/testsuite.conf
 
 # Setup database
 mkdir -p archive
