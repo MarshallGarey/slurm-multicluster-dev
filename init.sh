@@ -64,6 +64,7 @@ do
 	len=${#subs_in[@]}
 	j=0
 
+	# Configuration files
 	cd "${install_path}"
 	cp -r tmpetc c${i}/
 	mv c${i}/tmpetc c${i}/etc
@@ -71,6 +72,8 @@ do
 
 	while [ ${j} -lt ${len} ]
 	do
+		# grep -d skip (--directory=skip): skip directories
+		# grep -l (--files-with-matches): print only file names
 		for file in $(grep -d skip -l "${subs_in[${j}]}" *)
 		do
 			sed -i "s@${subs_in[${j}]}@${subs_out[${j}]}@g" ${file}
@@ -78,6 +81,7 @@ do
 		j=$((${j}+1))
 	done
 
+	# Scripts
 	cd "${install_path}"
 	cp -r tmpscripts c${i}/
 	mv c${i}/tmpscripts c${i}/scripts
