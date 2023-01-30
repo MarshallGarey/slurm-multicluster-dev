@@ -49,6 +49,7 @@ done
 
 # Do text substitutions and copy etc and scripts directories to each cluster
 sed -i "s@#INSTALL_PATH@${install_path}@g" etc/slurmdbd.conf
+sed -i "s@#INSTALL_PATH@${install_path}@g" start_slurmds.sh
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_clusters.sh
 sed -i "s@#INSTALL_PATH@${install_path}@g" stop_clusters.sh
 sed -i "s@#SLURM_USER@${slurm_user}@g" etc/slurmdbd.conf
