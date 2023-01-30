@@ -68,6 +68,7 @@ do
 	# Configuration files
 	cd "${install_path}"
 	cp -r tmpetc c${i}/
+	rm -rf c${i}/etc
 	mv c${i}/tmpetc c${i}/etc
 	cd "${install_path}/c${i}/etc"
 
@@ -85,6 +86,7 @@ do
 	# SPANK
 	cd "${install_path}"
 	cp -r tmpspank c${i}/
+	rm -rf c${i}/spank
 	mv c${i}/tmpspank c${i}/spank
 	cd c${i}/spank
 	for file in $(grep -d skip -l "#INSTALL_PATH" *)
@@ -99,6 +101,7 @@ do
 	# Scripts
 	cd "${install_path}"
 	cp -r tmpscripts c${i}/
+	rm -rf c${i}/scripts
 	mv c${i}/tmpscripts c${i}/scripts
 	cd "${install_path}/c${i}/scripts"
 	for file in $(grep -d skip -l "#INSTALL_PATH" *)
