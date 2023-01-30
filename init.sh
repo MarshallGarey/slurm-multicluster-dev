@@ -47,7 +47,7 @@ exec ${slurm_path}/bin/${file} \"\$@\"
 	i=$((${i}+1))
 done
 
-# Do text substitutions and copy etc and scripts directories to each cluster
+# Do text substitutions and copy directories to each cluster
 sed -i "s@#INSTALL_PATH@${install_path}@g" etc/slurmdbd.conf
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_slurmds.sh
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_clusters.sh
@@ -80,6 +80,20 @@ do
 			sed -i "s@${subs_in[${j}]}@${subs_out[${j}]}@g" ${file}
 		done
 		j=$((${j}+1))
+	done
+
+	# SPANK
+	cd "${install_path}"
+	cp -r tmpspank c${i}/
+	mv c${i}/tmpspank c${i}/spank
+	cd c${i}/spank
+	for file in $(grep -d skip -l "#INSTALL_PATH" *)
+	do
+		sed -i "s@#INSTALL_PATH@${install_path}@g" ${file}
+	done
+	for file in $(grep -d skip -l "#CLUSTER" *)
+	do
+		sed -i "s@#CLUSTER@${i}@g" ${file}
 	done
 
 	# Scripts
