@@ -119,7 +119,7 @@ cd ${install_path}
 # Setup testsuite
 printf "# globals.local
 set slurm_dir \"${install_path}\"
-set build_dir \"${slurm_dir}/build\"
+set build_dir \"${install_path}/build\"
 #set testsuite_log_level $LOG_LEVEL_TRACE
 set testsuite_cleanup_on_failure false
 
