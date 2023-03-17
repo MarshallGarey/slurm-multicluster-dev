@@ -85,13 +85,14 @@ do
 	SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
 	while [ $node_inx -le $num_nodes ]
 	do
-		fullname="$nodename$cluster_inx-$node_inx"
-		#echo "Start node $fullname"
-		echo "sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $node_name$cluster_inx-$node_inx $slurmd_flags"
+		full_name="$node_name$cluster_inx-$node_inx"
+		#echo "Start node $full_name"
+		echo "sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags"
 		# Start in parallel by backgrounding the slurmd
-		#sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $node_name$cluster_inx-$node_inx $slurmd_flags &
+		#sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags &
 		# Start sequentially
-		sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags
+		export NODE_NAME=$full_name
+		sudo --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags
 		node_inx=$(($node_inx+1))
 		# Delay for testing
 		#sleep 0.5
