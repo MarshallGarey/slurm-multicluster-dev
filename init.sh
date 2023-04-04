@@ -10,7 +10,6 @@ if [ -z "${branch_name}" ]
 then
 	git clone git@github.com:SchedMD/slurm.git ../slurm
 else
-	# git ls-remote returns
 	count=$(git ls-remote --heads https://github.com/SchedMD/slurm.git "${branch_name}" | wc -l)
 	if [ "${count}" -ne 1 ]
 	then
