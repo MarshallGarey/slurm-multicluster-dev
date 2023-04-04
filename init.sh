@@ -10,6 +10,13 @@ if [ -z "${branch_name}" ]
 then
 	git clone git@github.com:SchedMD/slurm.git ../slurm
 else
+	# git ls-remote returns
+	count=$(git ls-remote --heads https://github.com/SchedMD/slurm.git "${branch_name}" | wc -l)
+	if [ "${count}" -ne 1 ]
+	then
+		echo "Specified Slurm branch \"${branch_name}\" does not exist."
+		exit -1
+	fi
 	git clone --single-branch -b "${branch_name}" git@github.com:SchedMD/slurm.git ../slurm
 fi
 mkdir -p build lib
