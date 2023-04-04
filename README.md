@@ -34,7 +34,7 @@ also use
 [ccache]([https://github.com/ccache/ccache](https://github.com/ccache/ccache))
 to speed up compilation.
 
-#### How to setup Slurm's database:
+### How to setup Slurm's database:
 This is required before you can run Slurm.
 Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database.
 Change the permissions of the slurmdbd.conf file to 600 (required by Slurm).
