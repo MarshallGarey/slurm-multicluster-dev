@@ -51,14 +51,19 @@ Start slurmdbd, then add clusters, desired accounts, and desired users.
 
 ## How to Start Slurm:
 
-    sudo ./start_clusters.sh [desired_flags]
+    ./start_clusters.sh [desired_flags]
 
 The help/usage (./start\_clusters.sh -h) displays all the arguments.
 This script calls ./stop\_clusters.sh first, then starts the Slurm daemons.
+You should have added slurmd and stop\_clusters.sh to /etc/sudoers so they can
+be executed with sudo without a password prompt.
 
 ## How to Stop Slurm:
 
     sudo ./stop_clusters.sh
+
+You should have added this script to /etc/sudoers so it can be executed
+with sudo without a password prompt.
 
 ## Running Slurm commands:
 
