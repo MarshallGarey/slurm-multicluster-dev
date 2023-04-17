@@ -58,6 +58,7 @@ sed -i "s@#INSTALL_PATH@${install_path}@g" etc/slurmdbd.conf
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_slurmds.sh
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_clusters.sh
 sed -i "s@#INSTALL_PATH@${install_path}@g" stop_clusters.sh
+sed -i "s@#INSTALL_PATH@${install_path}@g" stop_node.sh
 sed -i "s@#SLURM_USER@${slurm_user}@g" etc/slurmdbd.conf
 sed -i "s@#DB_NAME@$db_name@g" etc/slurmdbd.conf
 sed -i "s@#PORT@$startingport@g" etc/slurmdbd.conf
@@ -154,3 +155,6 @@ ${sacctmgr} -i add user ${slurm_user} account=acct1
 kill $(cat run/slurmdbd.pid)
 
 echo "Done!"
+echo "Please add the following lines to /etc/sudoers[.d/]:"
+echo "${slurm_user} ALL = (root) SETENV:NOPASSWD:${install_path}/stop_node.sh"
+echo "${slurm_user} ALL = (root) SETENV:NOPASSWD:${install_path}/sbin/slurmd"
