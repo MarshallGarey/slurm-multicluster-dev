@@ -110,6 +110,8 @@ do
 	rm -rf c${i}/scripts
 	mv c${i}/tmpscripts c${i}/scripts
 	cd "${install_path}/c${i}/scripts"
+	# Powersave scripts need non-world/group write permissions
+	chmod 755 *.sh
 	for file in $(grep -d skip -l "#INSTALL_PATH" *)
 	do
 		sed -i "s@#INSTALL_PATH@${install_path}@g" ${file}
