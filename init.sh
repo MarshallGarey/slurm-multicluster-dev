@@ -122,8 +122,16 @@ do
 		sed -i "s@#CLUSTER@${i}@g" ${file}
 	done
 done
-cd ${install_path}
 
+# Add symlinks to c1/etc. c1 will act as the default cluster.
+cd "${install_path}/c1/etc"
+for f in *
+do
+	cd "${install_path}/etc"
+	ln -sr "../c1/etc/$f" "$f"
+done
+
+cd ${install_path}
 
 # Setup testsuite
 printf "# globals.local
