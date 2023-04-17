@@ -158,7 +158,7 @@ set +x
 echo ""
 echo ""
 echo "Done!"
-echo "Please add the following lines to /etc/sudoers[.d/]:"
+echo "Please add the following lines to the bottom of /etc/sudoers or an included file in /etc/sudoers.d/:"
 echo "${slurm_user} ALL = (root) SETENV:NOPASSWD:${install_path}/stop_node.sh"
 echo "${slurm_user} ALL = (root) SETENV:NOPASSWD:${install_path}/stop_clusters.sh"
 echo "${slurm_user} ALL = (root) SETENV:NOPASSWD:${install_path}/sbin/slurmd"
