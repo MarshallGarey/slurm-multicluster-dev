@@ -57,15 +57,6 @@ fi
 validate_number $num_clusters 1 3 "-c"
 validate_number $num_nodes 1 99 "-n"
 
-# Ensure that we have sudo privileges
-sudo -v
-rc=$?
-if [ $rc != 0 ]
-then
-	echo "failed, need sudo privileges to run this script"
-	exit 1
-fi
-
 installpath="#INSTALL_PATH"
 
 if [ $num_clusters -eq 1 ]
@@ -78,7 +69,7 @@ fi
 sudo ./stop_clusters.sh
 
 # Start slurmdbd
-sudo -u #SLURM_USER $installpath/sbin/slurmdbd
+$installpath/sbin/slurmdbd
 sleep 1
 
 # Start slurmctld's
@@ -86,7 +77,7 @@ i=1
 while [ $i -le $num_clusters ]
 do
 	SLURM_CONF="$installpath/c$i/etc/slurm.conf"
-	sudo -u #SLURM_USER $installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
+	$installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
 	i=$(($i+1))
 done
 
