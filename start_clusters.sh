@@ -92,7 +92,7 @@ do
 		nodename="n${cluster_inx}-${node_inx}"
 		echo "Start node ${nodename}"
 		export NODE_NAME=${nodename}
-		sudo --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N ${nodename} &
+		sudo --background --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N ${nodename}
 
 		node_inx=$(($node_inx+1))
 	done
