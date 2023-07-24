@@ -53,7 +53,15 @@ exec ${slurm_path}/bin/${file} \"\$@\"
 	i=$((${i}+1))
 done
 
+# Copy example scripts or conf files from the Slurm repo etc directory
+tmpetc_p="${install_path}/tmpetc"
+cd "${install_path}/../slurm/etc"
+cp burst_buffer.lua.example "${tmpetc_p}/burst_buffer.lua"
+cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
+cp job_submit.lua.example "${tmpetc_p}/job_submit.lua"
+
 # Do text substitutions and copy directories to each cluster
+cd "${install_path}"
 sed -i "s@#INSTALL_PATH@${install_path}@g" etc/slurmdbd.conf
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_slurmds.sh
 sed -i "s@#INSTALL_PATH@${install_path}@g" start_clusters.sh
