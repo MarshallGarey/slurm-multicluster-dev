@@ -30,15 +30,22 @@ then
 else
 	${makeme} --with-all
 fi
-# Setup bin directories for each cluster
-cd ..
-slurm_path="$(pwd)"
+# Setup directories for each cluster
+cd "${install_path}"
 i=1
 while [ $i -le 3 ]
 do
-	c="${slurm_path}/c$i"
+	c="${install_path}/c$i"
 	#echo $c
-	mkdir ${c}/bin
+	# Make the cluster directory and any additional needed directories.
+	mkdir "${c}"
+	cd "${c}"
+	mkdir log
+	mkdir run
+	mkdir spool
+	# Setup the bin directory; each script will be a wrapper of the
+	# actual binary file
+	mkdir bin
 	for file in $(ls bin/)
 	do
 		script="${c}/bin/${file}"
@@ -46,11 +53,15 @@ do
 		printf "\
 #!/bin/sh
 export SLURM_CONF=${c}/etc/slurm.conf
-exec ${slurm_path}/bin/${file} \"\$@\"
+exec ${install_path}/bin/${file} \"\$@\"
 " > $script
 		chmod 775 $script
 	done
 	i=$((${i}+1))
+	# Setup symlinks
+	ln -sr ../sbin sbin
+	ln -sr ../share share
+	ln -sr ../.envrc .envrc
 done
 
 # Copy example scripts or conf files from the Slurm repo etc directory

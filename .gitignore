@@ -7,3 +7,6 @@ sbin/*
 man/*
 */state/*
 slurm-*.out
+c1
+c2
+c3
