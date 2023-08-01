@@ -45,6 +45,7 @@ do
 	# Setup the bin directory; each script will be a wrapper of the
 	# actual binary file
 	mkdir bin
+	cd "${install_path}"
 	for file in $(ls bin/)
 	do
 		script="${c}/bin/${file}"
@@ -58,6 +59,7 @@ exec ${install_path}/bin/${file} \"\$@\"
 	done
 	i=$((${i}+1))
 	# Setup symlinks
+	cd "${c}"
 	ln -sr ../sbin sbin
 	ln -sr ../share share
 	ln -sr ../.envrc .envrc
