@@ -2,7 +2,6 @@
 set -x
 install_path=$(pwd)
 
-./allow_direnv.sh
 source init.conf
 
 # Clone, then build and install Slurm
@@ -63,6 +62,9 @@ exec ${install_path}/bin/${file} \"\$@\"
 	ln -sr ../share share
 	ln -sr ../.envrc .envrc
 done
+
+# Enable direnv
+./allow_direnv.sh
 
 # Copy example scripts or conf files from the Slurm repo etc directory
 tmpetc_p="${install_path}/tmpetc"
