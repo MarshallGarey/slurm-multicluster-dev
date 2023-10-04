@@ -20,5 +20,6 @@ tmpetc/*
 !tmpetc/gres.conf
 !tmpetc/helpers.conf
 !tmpetc/job_container.conf
+!tmpetc/job_submit.lua
 !tmpetc/plugstack.conf
 !tmpetc/slurm.conf

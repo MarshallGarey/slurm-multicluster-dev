@@ -73,7 +73,8 @@ tmpetc_p="${install_path}/tmpetc"
 cd "${install_path}/../slurm/etc"
 cp burst_buffer.lua.example "${tmpetc_p}/burst_buffer.lua"
 cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
-cp job_submit.lua.example "${tmpetc_p}/job_submit.lua"
+# I'm using my own, so don't copy from etc/
+#cp job_submit.lua.example "${tmpetc_p}/job_submit.lua"
 
 # Do text substitutions and copy directories to each cluster
 cd "${install_path}"
