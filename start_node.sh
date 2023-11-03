@@ -7,7 +7,7 @@ fi
 set -x
 nodename=$1
 cluster=$2
-args=$3
+args="${@:3}" # all arguments from the third onward
 export SLURM_CONF="$(pwd)/${cluster}/etc/slurm.conf"
 export NODE_NAME=${nodename}
-sudo --preserve-env=SLURM_CONF,NODE_NAME "$(pwd)/sbin/slurmd" -N$nodename "${args}"
+sudo --preserve-env=SLURM_CONF,NODE_NAME "$(pwd)/sbin/slurmd" -N$nodename ${args}
