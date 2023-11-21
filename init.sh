@@ -157,6 +157,8 @@ done
 
 cd ${install_path}
 
+# Fix file permissions on jwt key
+chmod 0600 jwt_hs256.key
 # Setup testsuite
 printf "# globals.local
 set slurm_dir \"${install_path}\"
