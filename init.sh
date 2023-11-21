@@ -163,7 +163,7 @@ chmod 0600 jwt_hs256.key
 printf "# globals.local
 set slurm_dir \"${install_path}\"
 set build_dir \"${install_path}/build\"
-#set testsuite_log_level $LOG_LEVEL_TRACE
+#set testsuite_log_level \$LOG_LEVEL_TRACE
 set testsuite_cleanup_on_failure false
 
 #federation tests (test37.*) are all broken right now
