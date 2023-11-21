@@ -5,6 +5,7 @@ node_name='n'
 num_clusters=1
 num_nodes=10
 slurmd_flags=''
+slurmd_binary=''
 verbose=0
 
 print_usage() {
@@ -16,6 +17,7 @@ Usage: ./start_slurmds.sh [-c<num_clusters>] [-h] [-n<num_nodes>] \
 -n: Number of nodes (slurmd's) to start. Valid numbers: 1-99.
 -N: NodeName (if not given, NodeName is 'n')
 -o: Flags to pass to slurmd. Must be surrounded by quotes.
+-p: Path to an alternate slurmd binary to launch instead of the one here. Useful for cross-version testing.
 -v: Print verbose logs.
 "
 }
@@ -34,7 +36,7 @@ validate_number() {
 	fi
 }
 
-while getopts 'c:hn:N:o:uv' flag
+while getopts 'c:hn:N:o:p:uv' flag
 do
 	case "${flag}" in
 		c) num_clusters=${OPTARG} ;;
@@ -43,6 +45,7 @@ do
 		n) num_nodes=${OPTARG} ;;
 		N) node_name=${OPTARG} ;;
 		o) slurmd_flags=${OPTARG} ;;
+		p) slurmd_binary=${OPTARG} ;;
 		v) verbose=1 ;;
 	esac
 done
@@ -53,6 +56,7 @@ then
 	echo "node_name=$node_name"
 	echo "num_nodes=$num_nodes"
 	echo "slurmd_flags=$slurmd_flags"
+	echo "slurmd_binary=${slurmd_binary}"
 fi
 
 # Validate options
@@ -85,14 +89,17 @@ do
 	SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
 	while [ $node_inx -le $num_nodes ]
 	do
+		cmd=""
 		full_name="$node_name$cluster_inx-$node_inx"
-		#echo "Start node $full_name"
-		echo "sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags"
-		# Start in parallel by backgrounding the slurmd
-		#sudo $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags &
-		# Start sequentially
 		export NODE_NAME=$full_name
-		sudo --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N $full_name $slurmd_flags
+		#echo "Start node $full_name"
+		if [ -z "${slurmd_binary}" ]
+		then
+			slurmd_binary="$installpath/sbin/slurmd"
+		fi
+		cmd="sudo --background --preserve-env=NODE_NAME ${slurmd_binary} -f $SLURM_CONF -N $full_name $slurmd_flags"
+		echo "${cmd}"
+		$cmd
 		node_inx=$(($node_inx+1))
 		# Delay for testing
 		#sleep 0.5
