@@ -13,6 +13,7 @@ Usage: ./start_clusters.sh [-c<num_clusters>] [-h] [-n<num_nodes>] \
 [-o<'slurmctld_flags'>] [-v]
 
 -c: Number of clusters to start. Valid numbers: 1, 2, or 3.
+-f: Path to alternate slurm.conf.
 -h: Print this usage string.
 -n: Number of nodes (slurmd's) to start. Valid numbers: 1-99.
 -o: Flags to pass to slurmctld. Must be surrounded by quotes.
@@ -34,10 +35,11 @@ validate_number() {
 	fi
 }
 
-while getopts 'c:hn:o:uv' flag
+while getopts 'c:f:hn:o:uv' flag
 do
 	case "${flag}" in
 		c) num_clusters=${OPTARG} ;;
+		f) slurm_conf=${OPTARG} ;;
 		h) print_usage
 		   exit 1 ;;
 		n) num_nodes=${OPTARG} ;;
@@ -76,25 +78,35 @@ sleep 1
 i=1
 while [ $i -le $num_clusters ]
 do
-	SLURM_CONF="$installpath/c$i/etc/slurm.conf"
+	if [ -z "${slurm_conf}" ]
+	then
+		SLURM_CONF="$installpath/c$i/etc/slurm.conf"
+	else
+		SLURM_CONF="${slurm_conf}"
+	fi
 	$installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
 	i=$(($i+1))
 done
 
 # Start slurmd's - start them all in parallel
-cluster_inx=1
-while [ $cluster_inx -le $num_clusters ]
+i=1
+while [ $i -le $num_clusters ]
 do
 	node_inx=1
-	SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
+	if [ -z "${slurm_conf}" ]
+	then
+		SLURM_CONF="$installpath/c$i/etc/slurm.conf"
+	else
+		SLURM_CONF="${slurm_conf}"
+	fi
 	while [ $node_inx -le $num_nodes ]
 	do
-		nodename="n${cluster_inx}-${node_inx}"
+		nodename="n${i}-${node_inx}"
 		echo "Start node ${nodename}"
 		export NODE_NAME=${nodename}
 		sudo --background --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N ${nodename}
 
 		node_inx=$(($node_inx+1))
 	done
-	cluster_inx=$(($cluster_inx+1))
+	i=$(($i+1))
 done
