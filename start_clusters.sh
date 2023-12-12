@@ -53,6 +53,7 @@ then
 	echo "num_clusters=$num_clusters"
 	echo "num_nodes=$num_nodes"
 	echo "slurmctld_flags=$slurmctld_flags"
+	set -x
 fi
 
 # Validate options
@@ -110,3 +111,8 @@ do
 	done
 	i=$(($i+1))
 done
+
+if [ $verbose -ne 0 ]
+then
+	set +x
+fi
