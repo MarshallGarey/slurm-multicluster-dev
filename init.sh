@@ -21,6 +21,71 @@ export SLURMRESTD=$(which slurmrestd)' > "${envrc}"
 	echo "export INSTALL_PATH=\"${install_path}\"" >> "${envrc}"
 }
 
+function mkslurmdbd_conf()
+{
+	local slurmdbd_conf="${install_path}/etc/slurmdbd.conf"
+	echo '#
+# slurmdbd.conf
+#
+
+# Debug
+DebugLevel=debug
+LogFile=#INSTALL_PATH/log/slurmdbd.log
+PidFile=#INSTALL_PATH/run/slurmdbd.pid
+
+# Database info
+StorageType=accounting_storage/mysql
+StorageHost=localhost
+DbdHost=localhost
+DbdPort=#PORT000
+StorageLoc=#DB_NAME
+SlurmUser=#SLURM_USER
+TrackWckey=yes
+
+# Configurations
+MessageTimeout=60
+AuthAltTypes=auth/jwt
+AuthAltParameters=jwt_key=#INSTALL_PATH/jwt_hs256.key
+
+# Purge and Archive
+ArchiveDir=#INSTALL_PATH/archive
+
+#ArchiveEvents=yes
+#ArchiveJobs=yes
+#ArchiveResvs=yes
+#ArchiveSteps=yes
+#ArchiveSuspend=yes
+#ArchiveTXN=yes
+#ArchiveUsage=yes
+
+#PurgeEventAfter=12hours
+#PurgeJobAfter=12hours
+#PurgeResvAfter=12hours
+#PurgeStepAfter=12hours
+#PurgeSuspendAfter=12hours
+#PurgeTXNAfter=12hours
+#PurgeUsageAfter=12hours
+' > "${slurmdbd_conf}"
+
+	chmod 600 etc/slurmdbd.conf
+}
+
+function mkjwt_key()
+{
+	local jwt_key="${install_path}/jwt_hs256.key"
+	echo "nate likes tacos" > "${jwt_key}"
+	chmod 600 "${jwt_key}"
+}
+
+function mkdirs_common()
+{
+	# Use -p so that no error occurs if the directory already exists,
+	# which happens when init.sh is re-run after it has already been run
+	mkdir -p etc
+	mkdir -p log
+	mkdir -p run
+}
+
 ###############################################################################
 # Script start
 ###############################################################################
@@ -57,6 +122,10 @@ else
 fi
 # Setup directories for each cluster
 cd "${install_path}"
+
+# Create base directories
+mkdirs_common
+
 i=1
 while [ $i -le 3 ]
 do
@@ -65,8 +134,7 @@ do
 	# Make the cluster directory and any additional needed directories.
 	mkdir "${c}"
 	cd "${c}"
-	mkdir log
-	mkdir run
+	mkdirs_common
 	mkdir spool
 	# Setup the bin directory; each script will be a wrapper of the
 	# actual binary file
@@ -101,6 +169,12 @@ mkenvrc
 
 # Enable direnv
 ./allow_direnv.sh
+
+# Generate slurmdbd.conf
+mkslurmdbd_conf
+
+# Generate jwt key
+mkjwt_key
 
 # Copy example scripts or conf files from the Slurm repo etc directory
 tmpetc_p="${install_path}/tmpetc"
@@ -187,8 +261,6 @@ done
 
 cd ${install_path}
 
-# Fix file permissions on jwt key
-chmod 0600 jwt_hs256.key
 # Setup testsuite
 printf "# globals.local
 set slurm_dir \"${install_path}\"
@@ -207,7 +279,6 @@ cp build/testsuite/testsuite.conf.sample ../slurm/testsuite/testsuite.conf
 # Setup database
 mkdir -p archive
 export SLURM_CONF="${install_path}/etc/slurm.conf"
-chmod 600 etc/slurmdbd.conf
 ./sbin/slurmdbd
 sleep 2 # Wait for slurmdbd to start
 sacctmgr=bin/sacctmgr
