@@ -113,10 +113,6 @@ cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
 # Do text substitutions and copy directories to each cluster
 cd "${install_path}"
 sed -i "s@#INSTALL_PATH@${install_path}@g" etc/slurmdbd.conf
-sed -i "s@#INSTALL_PATH@${install_path}@g" start_slurmds.sh
-sed -i "s@#INSTALL_PATH@${install_path}@g" start_clusters.sh
-sed -i "s@#INSTALL_PATH@${install_path}@g" stop_clusters.sh
-sed -i "s@#INSTALL_PATH@${install_path}@g" stop_node.sh
 sed -i "s@#SLURM_USER@${slurm_user}@g" etc/slurmdbd.conf
 sed -i "s@#DB_NAME@$db_name@g" etc/slurmdbd.conf
 sed -i "s@#PORT@$startingport@g" etc/slurmdbd.conf

@@ -72,7 +72,12 @@ then
 	exit 1
 fi
 
-installpath="#INSTALL_PATH"
+if [ -z "${INSTALL_PATH}" ]
+then
+	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
+	export INSTALL_PATH="$(pwd)"
+fi
+install_path="${INSTALL_PATH}"
 
 if [ $num_clusters -eq 1 ]
 then
@@ -86,7 +91,7 @@ cluster_inx=1
 while [ $cluster_inx -le $num_clusters ]
 do
 	node_inx=1
-	SLURM_CONF="$installpath/c$cluster_inx/etc/slurm.conf"
+	SLURM_CONF="${install_path}/c$cluster_inx/etc/slurm.conf"
 	while [ $node_inx -le $num_nodes ]
 	do
 		cmd=""
@@ -95,7 +100,7 @@ do
 		#echo "Start node $full_name"
 		if [ -z "${slurmd_binary}" ]
 		then
-			slurmd_binary="$installpath/sbin/slurmd"
+			slurmd_binary="${install_path}/sbin/slurmd"
 		fi
 		cmd="sudo --background --preserve-env=NODE_NAME ${slurmd_binary} -f $SLURM_CONF -N $full_name $slurmd_flags"
 		echo "${cmd}"

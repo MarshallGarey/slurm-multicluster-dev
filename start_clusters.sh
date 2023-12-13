@@ -60,7 +60,12 @@ fi
 validate_number $num_clusters 1 3 "-c"
 validate_number $num_nodes 1 99 "-n"
 
-installpath="#INSTALL_PATH"
+if [ -z "${INSTALL_PATH}" ]
+then
+	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
+	export INSTALL_PATH="$(pwd)"
+fi
+install_path="${INSTALL_PATH}"
 
 if [ $num_clusters -eq 1 ]
 then
@@ -72,7 +77,7 @@ fi
 sudo ./stop_clusters.sh
 
 # Start slurmdbd
-$installpath/sbin/slurmdbd
+"${install_path}"/sbin/slurmdbd
 sleep 1
 
 # Start slurmctld's
@@ -81,11 +86,11 @@ while [ $i -le $num_clusters ]
 do
 	if [ -z "${slurm_conf}" ]
 	then
-		SLURM_CONF="$installpath/c$i/etc/slurm.conf"
+		SLURM_CONF="${install_path}/c$i/etc/slurm.conf"
 	else
 		SLURM_CONF="${slurm_conf}"
 	fi
-	$installpath/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
+	"${install_path}"/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
 	i=$(($i+1))
 done
 
@@ -96,7 +101,7 @@ do
 	node_inx=1
 	if [ -z "${slurm_conf}" ]
 	then
-		SLURM_CONF="$installpath/c$i/etc/slurm.conf"
+		SLURM_CONF="${install_path}/c$i/etc/slurm.conf"
 	else
 		SLURM_CONF="${slurm_conf}"
 	fi
@@ -105,7 +110,7 @@ do
 		nodename="n${i}-${node_inx}"
 		echo "Start node ${nodename}"
 		export NODE_NAME=${nodename}
-		sudo --background --preserve-env=NODE_NAME $installpath/sbin/slurmd -f $SLURM_CONF -N ${nodename}
+		sudo --background --preserve-env=NODE_NAME "${install_path}"/sbin/slurmd -f $SLURM_CONF -N ${nodename}
 
 		node_inx=$(($node_inx+1))
 	done

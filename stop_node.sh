@@ -7,5 +7,12 @@ fi
 set -x
 nodename=$1
 cluster=$2
-installpath="#INSTALL_PATH"
-sudo kill $(cat "${installpath}/${cluster}/run/slurmd-${nodename}.pid")
+
+if [ -z "${INSTALL_PATH}" ]
+then
+	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
+	export INSTALL_PATH="$(pwd)"
+fi
+install_path="${INSTALL_PATH}"
+
+sudo kill $(cat "${install_path}/${cluster}/run/slurmd-${nodename}.pid")
