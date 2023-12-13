@@ -1,4 +1,30 @@
 #!/bin/bash
+
+###############################################################################
+# Functions
+###############################################################################
+
+function mkenvrc()
+{
+	envrc=".envrc"
+	echo '# .envrc
+# This file is used by direnv (https://direnv.net/).
+# direnv needs to be hooked into the shell: https://direnv.net/docs/hook.html
+# Once direnv is hooked into the shell, it automatically sets environment
+# variables listed in .envrc.
+SYSCONF=$(pwd)
+export PATH=$SYSCONF/bin:$SYSCONF/sbin:$PATH
+export MANPATH=$SYSCONF/share/man:$MANPATH
+export SACCT_FORMAT="cluster,jobid,jobname%20,state,exitcode,submit,start,end,elapsed,eligible"
+export SPRIO_FORMAT="%.15i %9r %.10Y %.10S %.10A %.10B %.10F %.10J %.10P %.10Q %30T"
+export SLURMRESTD=$(which slurmrestd)' > "${envrc}"
+	echo "export INSTALL_PATH=\"${install_path}\"" >> "${envrc}"
+}
+
+###############################################################################
+# Script start
+###############################################################################
+
 set -x
 install_path=$(pwd)
 
@@ -57,13 +83,21 @@ exec ${install_path}/bin/${file} \"\$@\"
 " > $script
 		chmod 775 $script
 	done
-	i=$((${i}+1))
-	# Setup symlinks
+
+	# envrc
 	cd "${c}"
+	mkenvrc
+
+	# Setup symlinks
 	ln -sr ../sbin sbin
 	ln -sr ../share share
 	ln -sr ../.envrc .envrc
+
+	i=$((${i}+1))
 done
+
+cd "${install_path}"
+mkenvrc
 
 # Enable direnv
 ./allow_direnv.sh
