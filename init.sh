@@ -86,6 +86,31 @@ function mkdirs_common()
 	mkdir -p run
 }
 
+function cp_tmp_dir()
+{
+	if [ $# -ne 2 ]
+	then
+		echo "${FUNCNAME[0]} expects 2 args: clusterdir dirname"
+		return -1
+	fi
+
+	local new="${1}/${2}"
+	local new_bk="${new}.bk"
+	local tmp="tmp${2}"
+
+	cd "${install_path}"
+	mkdir -p "${new}"
+	mkdir -p "${new_bk}"
+	cd "${new_bk}"
+	if [ -n "$(ls -A .)" ]
+	then
+		rm -r *
+	fi
+	cd -
+	mv "${new}"/* "${new_bk}/"
+	cp -r "${tmp}"/* "${new}/"
+}
+
 ###############################################################################
 # Script start
 ###############################################################################
@@ -201,12 +226,12 @@ do
 	j=0
 
 	# Configuration files
-	cd "${install_path}"
-	cp -r tmpetc c${i}/
-	rm -rf c${i}/etc
-	mv c${i}/tmpetc c${i}/etc
-	cd "${install_path}/c${i}/etc"
+	cp_tmp_dir "c${i}" "etc"
+	#rm -r c${i}/etc
+	#mv c${i}/tmpetc c${i}/etc
 
+	# Do text substitutions in config files
+	cd "${install_path}/c${i}/etc"
 	while [ ${j} -lt ${len} ]
 	do
 		# grep -d skip (--directory=skip): skip directories
@@ -219,10 +244,11 @@ do
 	done
 
 	# SPANK
-	cd "${install_path}"
-	cp -r tmpspank c${i}/
-	rm -rf c${i}/spank
-	mv c${i}/tmpspank c${i}/spank
+	cp_tmp_dir "c${i}" "spank"
+	#cd "${install_path}"
+	#cp -r tmpspank c${i}/
+	#rm -rf c${i}/spank
+	#mv c${i}/tmpspank c${i}/spank
 	cd c${i}/spank
 	for file in $(grep -d skip -l "#INSTALL_PATH" *)
 	do
@@ -234,10 +260,11 @@ do
 	done
 
 	# Scripts
-	cd "${install_path}"
-	cp -r tmpscripts c${i}/
-	rm -rf c${i}/scripts
-	mv c${i}/tmpscripts c${i}/scripts
+	cp_tmp_dir "c${i}" "scripts"
+	#cd "${install_path}"
+	#cp -r tmpscripts c${i}/
+	#rm -rf c${i}/scripts
+	#mv c${i}/tmpscripts c${i}/scripts
 	cd "${install_path}/c${i}/scripts"
 	# Powersave scripts need non-world/group write permissions
 	chmod 755 *.sh
