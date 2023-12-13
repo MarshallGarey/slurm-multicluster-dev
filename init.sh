@@ -165,6 +165,8 @@ do
 	# actual binary file
 	mkdir bin
 	cd "${install_path}"
+	set +x
+	echo "Generate cluster ${c} bin files"
 	for file in $(ls bin/)
 	do
 		script="${c}/bin/${file}"
@@ -177,6 +179,7 @@ exec ${install_path}/bin/${file} \"\$@\"
 		chmod 775 $script
 	done
 
+	set -x
 	# envrc
 	cd "${c}"
 	mkenvrc
