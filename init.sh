@@ -157,13 +157,13 @@ do
 	c="${install_path}/c$i"
 	#echo $c
 	# Make the cluster directory and any additional needed directories.
-	mkdir "${c}"
+	mkdir -p "${c}"
 	cd "${c}"
 	mkdirs_common
-	mkdir spool
+	mkdir -p spool
 	# Setup the bin directory; each script will be a wrapper of the
 	# actual binary file
-	mkdir bin
+	mkdir -p bin
 	cd "${install_path}"
 	set +x
 	echo "Generate cluster ${c} bin files"
