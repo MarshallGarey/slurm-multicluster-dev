@@ -60,12 +60,8 @@ fi
 validate_number $num_clusters 1 3 "-c"
 validate_number $num_nodes 1 99 "-n"
 
-if [ -z "${INSTALL_PATH}" ]
-then
-	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
-	export INSTALL_PATH="$(pwd)"
-fi
-install_path="${INSTALL_PATH}"
+# Get path to script: https://stackoverflow.com/a/1482133/4880288
+install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 if [ $num_clusters -eq 1 ]
 then

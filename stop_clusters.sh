@@ -9,12 +9,8 @@ then
 	exit 1
 fi
 
-if [ -z "${INSTALL_PATH}" ]
-then
-	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
-	export INSTALL_PATH="$(pwd)"
-fi
-install_path="${INSTALL_PATH}"
+# Get path to script: https://stackoverflow.com/a/1482133/4880288
+install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 echo "stopping clusters c1, c2, c3, install path=${install_path}"
 

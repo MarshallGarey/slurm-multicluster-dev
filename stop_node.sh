@@ -8,11 +8,7 @@ set -x
 nodename=$1
 cluster=$2
 
-if [ -z "${INSTALL_PATH}" ]
-then
-	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
-	export INSTALL_PATH="$(pwd)"
-fi
-install_path="${INSTALL_PATH}"
+# Get path to script: https://stackoverflow.com/a/1482133/4880288
+install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 sudo kill $(cat "${install_path}/${cluster}/run/slurmd-${nodename}.pid")

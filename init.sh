@@ -18,7 +18,6 @@ export MANPATH=$SYSCONF/share/man:$MANPATH
 export SACCT_FORMAT="cluster,jobid,jobname%20,state,exitcode,submit,start,end,elapsed,eligible"
 export SPRIO_FORMAT="%.15i %9r %.10Y %.10S %.10A %.10B %.10F %.10J %.10P %.10Q %30T"
 export SLURMRESTD=$(which slurmrestd)' > "${envrc}"
-	echo "export INSTALL_PATH=\"${install_path}\"" >> "${envrc}"
 }
 
 function mkslurmdbd_conf()
@@ -154,7 +153,8 @@ function build_slurm()
 ###############################################################################
 
 set -ex
-install_path=$(pwd)
+# Get path to script: https://stackoverflow.com/a/1482133/4880288
+install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 source init.conf
 
