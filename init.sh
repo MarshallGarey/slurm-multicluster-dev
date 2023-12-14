@@ -247,8 +247,6 @@ do
 
 	# Configuration files
 	cp_tmp_dir "c${i}" "etc"
-	#rm -r c${i}/etc
-	#mv c${i}/tmpetc c${i}/etc
 
 	# Do text substitutions in config files
 	cd "${install_path}/c${i}/etc"
@@ -265,10 +263,6 @@ do
 
 	# SPANK
 	cp_tmp_dir "c${i}" "spank"
-	#cd "${install_path}"
-	#cp -r tmpspank c${i}/
-	#rm -rf c${i}/spank
-	#mv c${i}/tmpspank c${i}/spank
 	cd c${i}/spank
 	for file in $(grep -d skip -l "#INSTALL_PATH" *)
 	do
@@ -281,10 +275,6 @@ do
 
 	# Scripts
 	cp_tmp_dir "c${i}" "scripts"
-	#cd "${install_path}"
-	#cp -r tmpscripts c${i}/
-	#rm -rf c${i}/scripts
-	#mv c${i}/tmpscripts c${i}/scripts
 	cd "${install_path}/c${i}/scripts"
 	# Powersave scripts need non-world/group write permissions
 	chmod 755 *.sh
@@ -334,7 +324,6 @@ set +e
 ${sacctmgr} -i add cluster c1 c2 c3
 ${sacctmgr} -i add account acct1
 ${sacctmgr} -i add user ${slurm_user} account=acct1
-#$sacctmgr} -i add fed discovery clusters=discovery1,discovery2,discovery3
 # Kill slurmdbd
 set -e
 kill $(cat run/slurmdbd.pid)
