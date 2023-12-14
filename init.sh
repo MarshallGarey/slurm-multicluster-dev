@@ -103,11 +103,11 @@ function cp_tmp_dir()
 	cd "${new_bk}"
 	if [ -n "$(ls -A .)" ]
 	then
-		rm -r *
+		rm -rf *
+		mv "${install_path}/${new}"/* "${install_path}/${new_bk}/"
 	fi
-	cd -
-	mv "${new}"/* "${new_bk}/"
-	cp -r "${tmp}"/* "${new}/"
+	cp -r "${install_path}/${tmp}"/* "${install_path}/${new}/"
+	cd "${install_path}"
 }
 
 function clone_slurm()
