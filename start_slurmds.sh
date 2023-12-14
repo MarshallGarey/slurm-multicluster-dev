@@ -63,15 +63,6 @@ fi
 validate_number $num_clusters 1 3 "-c"
 validate_number $num_nodes 1 99 "-n"
 
-# Ensure that we have sudo privileges
-sudo -v
-rc=$?
-if [ $rc != 0 ]
-then
-	echo "failed, need sudo privileges to run this script"
-	exit 1
-fi
-
 if [ -z "${INSTALL_PATH}" ]
 then
 	echo "INSTALL_PATH is not set in the environment; assuming $(pwd)"
