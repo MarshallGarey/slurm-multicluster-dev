@@ -157,6 +157,9 @@ set -ex
 install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 source init.conf
+source script_common.sh
+
+validate_number "${num_clusters}" 1 9 "num_clusters"
 
 # Clone, then build and install Slurm
 clone_slurm
@@ -169,7 +172,7 @@ cd "${install_path}"
 mkdirs_common
 
 i=1
-while [ $i -le 3 ]
+while [ $i -le ${num_clusters} ]
 do
 	c="${install_path}/c$i"
 	#echo $c
@@ -237,7 +240,8 @@ sed -i "s@#DB_NAME@$db_name@g" etc/slurmdbd.conf
 sed -i "s@#PORT@$startingport@g" etc/slurmdbd.conf
 sed -i "s@#SLURM_USER@${slurm_user}@g" start_clusters.sh
 sed -i "s@#SLURM_USER@${slurm_user}@g" stop_clusters.sh
-for i in {1..3}
+i=1
+while [ $i -le ${num_clusters} ]
 do
 	subs_in=("#CLUSTER" "#INSTALL_PATH" "#SLURM_USER" "#DB_NAME" "#PORT" "#MEMORY" "#SOCKETS" "#CORES" "#THREADS")
 	subs_out=("${i}" "${install_path}" "${slurm_user}" "${db_name}" "${startingport}" "${memory}" "${sockets}" "${corespersocket}" "${threadspercore}")
@@ -286,6 +290,7 @@ do
 	do
 		sed -i "s@#CLUSTER@${i}@g" ${file}
 	done
+	i=$((${i}+1))
 done
 
 # Add symlinks to c1/etc. c1 will act as the default cluster.
@@ -305,6 +310,7 @@ set build_dir \"${install_path}/build\"
 #set testsuite_log_level \$LOG_LEVEL_TRACE
 set testsuite_cleanup_on_failure false
 
+# TODO: When uncommenting this, fix it to use num_clusters
 #federation tests (test37.*) are all broken right now
 #set fed_slurm_base \"${slurm_dir}\"
 #set fedc1 \"c1\"
@@ -313,6 +319,15 @@ set testsuite_cleanup_on_failure false
 " > ../slurm/testsuite/expect/globals.local
 cp build/testsuite/testsuite.conf.sample ../slurm/testsuite/testsuite.conf
 
+# There must be at least one cluster configured. Build out the string
+# for any additional clusters.
+i=2
+clusters="c1"
+while [ $i -le ${num_clusters} ]
+do
+	clusters="${clusters} c${i}"
+	i=$((${i}+1))
+done
 # Setup database
 mkdir -p archive
 export SLURM_CONF="${install_path}/etc/slurm.conf"
@@ -321,7 +336,9 @@ sleep 2 # Wait for slurmdbd to start
 sacctmgr=bin/sacctmgr
 # sacctmgr may error if the assocs already exist
 set +e
-${sacctmgr} -i add cluster c1 c2 c3
+# Do not surround ${clusters} with quotes since we want the
+# different clusters to be space separated
+${sacctmgr} -i add cluster ${clusters}
 ${sacctmgr} -i add account acct1
 ${sacctmgr} -i add user ${slurm_user} account=acct1
 # Kill slurmdbd

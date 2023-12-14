@@ -4,7 +4,9 @@ function validate_number()
 {
 	if [ $# -ne 4 ]
 	then
-		echo "Expecting 4 arguments: <var to validate> <min value> <max value> <string desription or argument flag>
+		echo "Expecting 4 arguments: <var to validate> <min value> <max value> <string desription or argument flag>"
+		return -1
+	fi
 	num=$1
 	min=$2
 	max=$3
