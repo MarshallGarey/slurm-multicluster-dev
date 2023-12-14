@@ -329,11 +329,14 @@ export SLURM_CONF="${install_path}/etc/slurm.conf"
 ./sbin/slurmdbd
 sleep 2 # Wait for slurmdbd to start
 sacctmgr=bin/sacctmgr
+# sacctmgr may error if the assocs already exist
+set +e
 ${sacctmgr} -i add cluster c1 c2 c3
 ${sacctmgr} -i add account acct1
 ${sacctmgr} -i add user ${slurm_user} account=acct1
 #$sacctmgr} -i add fed discovery clusters=discovery1,discovery2,discovery3
 # Kill slurmdbd
+set -e
 kill $(cat run/slurmdbd.pid)
 
 set +x
