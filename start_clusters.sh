@@ -2,6 +2,11 @@
 # start_clusters.sh
 # Startup script for Slurm
 # Print usage with ./start_clusters -h
+
+# Get path to script: https://stackoverflow.com/a/1482133/4880288
+install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
+source "${install_path}/script_common.sh"
+
 num_clusters=1
 num_nodes=10
 slurmctld_flags=''
@@ -19,20 +24,6 @@ Usage: ./start_clusters.sh [-c<num_clusters>] [-h] [-n<num_nodes>] \
 -o: Flags to pass to slurmctld. Must be surrounded by quotes.
 -v: Print verbose logs.
 "
-}
-
-validate_number() {
-	num=$1
-	min=$2
-	max=$3
-	arg_str=$4
-	is_not_num_regex='[^0-9]+'
-
-	if [[ $num =~ $is_not_num_regex || $num -gt $max || $num_clusters -lt $min ]]
-	then
-		echo "Error: Invalid argument $arg_str=$num: it must be between $min and $max, inclusivce."
-		exit 1
-	fi
 }
 
 while getopts 'c:f:hn:o:uv' flag
@@ -59,9 +50,6 @@ fi
 # Validate options
 validate_number $num_clusters 1 3 "-c"
 validate_number $num_nodes 1 99 "-n"
-
-# Get path to script: https://stackoverflow.com/a/1482133/4880288
-install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 if [ $num_clusters -eq 1 ]
 then

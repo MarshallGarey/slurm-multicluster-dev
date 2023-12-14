@@ -1,6 +1,11 @@
 #!/bin/bash
 # start_slurmds.sh
 # Startup script for slurmds
+
+# Get path to script: https://stackoverflow.com/a/1482133/4880288
+install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
+source "${install_path}/script_common.sh"
+
 node_name='n'
 num_clusters=1
 num_nodes=10
@@ -20,20 +25,6 @@ Usage: ./start_slurmds.sh [-c<num_clusters>] [-h] [-n<num_nodes>] \
 -p: Path to an alternate slurmd binary to launch instead of the one here. Useful for cross-version testing.
 -v: Print verbose logs.
 "
-}
-
-validate_number() {
-	num=$1
-	min=$2
-	max=$3
-	arg_str=$4
-	is_not_num_regex='[^0-9]+'
-
-	if [[ $num =~ $is_not_num_regex || $num -gt $max || $num -lt $min ]]
-	then
-		echo "Error: Invalid argument $arg_str=$num: it must be between $min and $max, inclusivce."
-		exit 1
-	fi
 }
 
 while getopts 'c:hn:N:o:p:uv' flag
@@ -62,9 +53,6 @@ fi
 # Validate options
 validate_number $num_clusters 1 3 "-c"
 validate_number $num_nodes 1 99 "-n"
-
-# Get path to script: https://stackoverflow.com/a/1482133/4880288
-install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
 if [ $num_clusters -eq 1 ]
 then
