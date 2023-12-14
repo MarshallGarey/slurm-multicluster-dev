@@ -111,6 +111,27 @@ function cp_tmp_dir()
 	cp -r "${tmp}"/* "${new}/"
 }
 
+function clone_slurm()
+{
+	if [ -d "${install_path}/../slurm" ]
+	then
+		# Already exists
+		return
+	fi
+	if [ -z "${branch_name}" ]
+	then
+		git clone git@github.com:SchedMD/slurm.git ../slurm
+	else
+		count=$(git ls-remote --heads https://github.com/SchedMD/slurm.git "${branch_name}" | wc -l)
+		if [ "${count}" -ne 1 ]
+		then
+			echo "Specified Slurm branch \"${branch_name}\" does not exist."
+			exit -1
+		fi
+		git clone --single-branch -b "${branch_name}" git@github.com:SchedMD/slurm.git ../slurm
+	fi
+}
+
 ###############################################################################
 # Script start
 ###############################################################################
@@ -121,18 +142,7 @@ install_path=$(pwd)
 source init.conf
 
 # Clone, then build and install Slurm
-if [ -z "${branch_name}" ]
-then
-	git clone git@github.com:SchedMD/slurm.git ../slurm
-else
-	count=$(git ls-remote --heads https://github.com/SchedMD/slurm.git "${branch_name}" | wc -l)
-	if [ "${count}" -ne 1 ]
-	then
-		echo "Specified Slurm branch \"${branch_name}\" does not exist."
-		exit -1
-	fi
-	git clone --single-branch -b "${branch_name}" git@github.com:SchedMD/slurm.git ../slurm
-fi
+clone_slurm
 mkdir -p build lib
 cd build
 ../../slurm/configure --prefix="${install_path}" --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir="${install_path}/lib"
