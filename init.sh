@@ -201,9 +201,9 @@ exec ${install_path}/bin/${file} \"\$@\"
 	mkenvrc
 
 	# Setup symlinks
-	ln -sr ../sbin sbin
-	ln -sr ../share share
-	ln -sr ../.envrc .envrc
+	ln -sfr ../sbin sbin
+	ln -sfr ../share share
+	ln -sfr ../.envrc .envrc
 
 	i=$((${i}+1))
 done
@@ -302,7 +302,7 @@ cd "${install_path}/c1/etc"
 for f in *
 do
 	cd "${install_path}/etc"
-	ln -sr "../c1/etc/$f" "$f"
+	ln -sfr "../c1/etc/$f" "$f"
 done
 
 cd ${install_path}
