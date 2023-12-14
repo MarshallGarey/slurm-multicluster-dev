@@ -153,7 +153,7 @@ function build_slurm()
 # Script start
 ###############################################################################
 
-set -x
+set -ex
 install_path=$(pwd)
 
 source init.conf
