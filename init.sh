@@ -132,6 +132,23 @@ function clone_slurm()
 	fi
 }
 
+function build_slurm()
+{
+	cd "${install_path}"
+	mkdir -p build lib
+	cd build
+	../../slurm/configure --prefix="${install_path}" --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir="${install_path}/lib"
+	# Build and install
+	makeme=$(which make.py)
+	rc=$?
+	if [ ${rc} -ne 0 ]
+	then
+		make -j install
+	else
+		${makeme} --with-all
+	fi
+}
+
 ###############################################################################
 # Script start
 ###############################################################################
@@ -143,18 +160,7 @@ source init.conf
 
 # Clone, then build and install Slurm
 clone_slurm
-mkdir -p build lib
-cd build
-../../slurm/configure --prefix="${install_path}" --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir="${install_path}/lib"
-# Build and install
-makeme=$(which make.py)
-rc=$?
-if [ ${rc} -ne 0 ]
-then
-	make -j install
-else
-	${makeme} --with-all
-fi
+build_slurm
 # Setup directories for each cluster
 cd "${install_path}"
 
