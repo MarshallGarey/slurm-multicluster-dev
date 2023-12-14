@@ -161,6 +161,7 @@ source init.conf
 # Clone, then build and install Slurm
 clone_slurm
 build_slurm
+
 # Setup directories for each cluster
 cd "${install_path}"
 
