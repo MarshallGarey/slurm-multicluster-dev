@@ -153,7 +153,7 @@ function build_slurm()
 	then
 		make -j install
 	else
-		${makeme} --with-all
+		${makeme} --with-all --with-clean
 	fi
 }
 
