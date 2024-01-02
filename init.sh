@@ -112,9 +112,18 @@ function cp_tmp_dir()
 
 function clone_slurm()
 {
-	if [ -d "${install_path}/../slurm" ]
+	local p="${install_path}/../slurm"
+	if [ -d "${p}" ]
 	then
-		# Already exists
+		# Already exists; pull latest changes
+		cd "${p}"
+		if [ -z "${branch_name}" ]
+		then
+			git checkout "${branch_name}"
+		else
+			git checkout master
+		fi
+		git pull
 		return
 	fi
 	if [ -z "${branch_name}" ]
