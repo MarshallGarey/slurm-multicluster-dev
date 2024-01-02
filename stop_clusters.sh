@@ -12,7 +12,7 @@ fi
 # Get path to script: https://stackoverflow.com/a/1482133/4880288
 install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
-echo "stopping clusters c1, c2, c3, install path=${install_path}"
+echo "Stopping Slurm"
 
 # Are there any files in the directory (i.e., daemons are running)?
 # -n flag for if means is not null
@@ -22,11 +22,17 @@ then
 	printf "Stopping:\n`ls ${install_path}/run/`\n"
 	for pid in `cat ${install_path}/run/*.pid`; do sudo kill -SIGINT $pid; done
 fi
-for i in {1..3}
+# Max number of clusters is 9
+for i in {1..9}
 do
-	if [ -n "`find ${install_path}/c$i/run ! -name '.gitignore' -type f`" ]
+	p="${install_path}/c${i}"
+	if [ ! -d "${p}" ]
 	then
-		printf "Stopping:\n`ls ${install_path}/c$i/run/`\n"
-		for pid in `cat ${install_path}/c$i/run/*.pid`; do sudo kill -SIGINT $pid; done
+		continue
+	fi
+	if [ -n "$(find ${p}/run ! -name '.gitignore' -type f)" ]
+	then
+		printf "Stopping:\n$(ls ${p}/run/)\n"
+		for pid in $(cat ${install_path}/c$i/run/*.pid); do sudo kill -SIGINT $pid; done
 	fi
 done
