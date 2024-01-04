@@ -117,13 +117,8 @@ function clone_slurm()
 	then
 		# Already exists; pull latest changes
 		cd "${p}"
-		if [ -z "${branch_name}" ]
-		then
-			git checkout "${branch_name}"
-		else
-			git checkout master
-		fi
 		git pull
+		cd -
 		return
 	fi
 	if [ -z "${branch_name}" ]
