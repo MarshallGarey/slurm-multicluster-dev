@@ -154,6 +154,67 @@ function build_slurm()
 	fi
 }
 
+function generate_dirs_files
+{
+	cd "${install_path}"
+
+	# Generate slurmdbd.conf
+	mkslurmdbd_conf
+
+	i=1
+	while [ $i -le ${num_clusters} ]
+	do
+		subs_in=("#CLUSTER" "#INSTALL_PATH" "#SLURM_USER" "#DB_NAME" "#PORT" "#MEMORY" "#SOCKETS" "#CORES" "#THREADS")
+		subs_out=("${i}" "${install_path}" "${slurm_user}" "${db_name}" "${startingport}" "${memory}" "${sockets}" "${corespersocket}" "${threadspercore}")
+
+		len=${#subs_in[@]}
+		j=0
+
+		# Configuration files
+		cp_tmp_dir "c${i}" "etc"
+
+		# Do text substitutions in config files
+		cd "${install_path}/c${i}/etc"
+		while [ ${j} -lt ${len} ]
+		do
+			# grep -d skip (--directory=skip): skip directories
+			# grep -l (--files-with-matches): print only file names
+			for file in $(grep -d skip -l "${subs_in[${j}]}" *)
+			do
+				sed -i "s@${subs_in[${j}]}@${subs_out[${j}]}@g" ${file}
+			done
+			j=$((${j}+1))
+		done
+
+		# SPANK
+		cp_tmp_dir "c${i}" "spank"
+		cd c${i}/spank
+		for file in $(grep -d skip -l "#INSTALL_PATH" *)
+		do
+			sed -i "s@#INSTALL_PATH@${install_path}@g" ${file}
+		done
+		for file in $(grep -d skip -l "#CLUSTER" *)
+		do
+			sed -i "s@#CLUSTER@${i}@g" ${file}
+		done
+
+		# Scripts
+		cp_tmp_dir "c${i}" "scripts"
+		cd "${install_path}/c${i}/scripts"
+		# Powersave scripts need non-world/group write permissions
+		chmod 755 *.sh
+		for file in $(grep -d skip -l "#INSTALL_PATH" *)
+		do
+			sed -i "s@#INSTALL_PATH@${install_path}@g" ${file}
+		done
+		for file in $(grep -d skip -l "#CLUSTER" *)
+		do
+			sed -i "s@#CLUSTER@${i}@g" ${file}
+		done
+		i=$((${i}+1))
+	done
+}
+
 ###############################################################################
 # Script start
 ###############################################################################
@@ -232,64 +293,7 @@ cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
 # I'm using my own, so don't copy from etc/
 #cp job_submit.lua.example "${tmpetc_p}/job_submit.lua"
 
-# Do text substitutions and copy directories to each cluster
-cd "${install_path}"
-
-# Generate slurmdbd.conf
-mkslurmdbd_conf
-
-i=1
-while [ $i -le ${num_clusters} ]
-do
-	subs_in=("#CLUSTER" "#INSTALL_PATH" "#SLURM_USER" "#DB_NAME" "#PORT" "#MEMORY" "#SOCKETS" "#CORES" "#THREADS")
-	subs_out=("${i}" "${install_path}" "${slurm_user}" "${db_name}" "${startingport}" "${memory}" "${sockets}" "${corespersocket}" "${threadspercore}")
-
-	len=${#subs_in[@]}
-	j=0
-
-	# Configuration files
-	cp_tmp_dir "c${i}" "etc"
-
-	# Do text substitutions in config files
-	cd "${install_path}/c${i}/etc"
-	while [ ${j} -lt ${len} ]
-	do
-		# grep -d skip (--directory=skip): skip directories
-		# grep -l (--files-with-matches): print only file names
-		for file in $(grep -d skip -l "${subs_in[${j}]}" *)
-		do
-			sed -i "s@${subs_in[${j}]}@${subs_out[${j}]}@g" ${file}
-		done
-		j=$((${j}+1))
-	done
-
-	# SPANK
-	cp_tmp_dir "c${i}" "spank"
-	cd c${i}/spank
-	for file in $(grep -d skip -l "#INSTALL_PATH" *)
-	do
-		sed -i "s@#INSTALL_PATH@${install_path}@g" ${file}
-	done
-	for file in $(grep -d skip -l "#CLUSTER" *)
-	do
-		sed -i "s@#CLUSTER@${i}@g" ${file}
-	done
-
-	# Scripts
-	cp_tmp_dir "c${i}" "scripts"
-	cd "${install_path}/c${i}/scripts"
-	# Powersave scripts need non-world/group write permissions
-	chmod 755 *.sh
-	for file in $(grep -d skip -l "#INSTALL_PATH" *)
-	do
-		sed -i "s@#INSTALL_PATH@${install_path}@g" ${file}
-	done
-	for file in $(grep -d skip -l "#CLUSTER" *)
-	do
-		sed -i "s@#CLUSTER@${i}@g" ${file}
-	done
-	i=$((${i}+1))
-done
+generate_dirs_files
 
 # Add symlinks to c1/etc. c1 will act as the default cluster.
 cd "${install_path}/c1/etc"
