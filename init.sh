@@ -94,18 +94,17 @@ function cp_tmp_dir()
 	fi
 
 	local new="${1}/${2}"
-	local new_bk="${new}.bk"
+	local t="$(date +%Y-%m-%dT%H:%M:%S)"
+	local new_bk="${new}.bk.${t}"
 	local tmp="tmp${2}"
 
 	cd "${install_path}"
 	mkdir -p "${new}"
 	mkdir -p "${new_bk}"
 	cd "${new_bk}"
-	if [ -n "$(ls -A .)" ]
-	then
-		rm -rf *
-		mv "${install_path}/${new}"/* "${install_path}/${new_bk}/"
-	fi
+	# Backup old files
+	mv "${install_path}/${new}"/* "${install_path}/${new_bk}/"
+	# Create new files
 	cp -r "${install_path}/${tmp}"/* "${install_path}/${new}/"
 	cd "${install_path}"
 }
