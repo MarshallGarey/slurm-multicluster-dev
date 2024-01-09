@@ -215,9 +215,40 @@ function generate_dirs_files
 	done
 }
 
+function print_usage()
+{
+	printf "\
+Usage: init.sh [flags]
+Flags:
+-c: Skip configuring and compiling Slurm
+-g: Skip git clone or pull
+-h: Display this message
+-p: Preserve exisiting Slurm configuration files and scripts, do not (re)generate cluster directories
+"
+}
+
 ###############################################################################
 # Script start
 ###############################################################################
+
+# Initialize options
+skip_build=0
+preserve_dirs=0
+skip_git=0
+while getopts 'cghp' flag
+do
+	case "${flag}" in
+	c) skip_build=1 ;;
+	g) skip_git=1 ;;
+	h) print_usage; exit 1 ;;
+	p) preserve_dirs=1 ;;
+	*) # Default case
+	   print_usage
+	   exit 1 ;;
+	esac
+done
+
+echo "skip_build=${skip_build}, preserve_dirs=${preserve_dirs}, skip_git=${skip_git}"
 
 set -ex
 # Get path to script: https://stackoverflow.com/a/1482133/4880288
@@ -226,8 +257,14 @@ install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 validate_number "${num_clusters}" 1 9 "num_clusters"
 
 # Clone, then build and install Slurm
-clone_slurm
-build_slurm
+if [ ${skip_git} -eq 0 ]
+then
+	clone_slurm
+fi
+if [ ${skip_build} -eq 0 ]
+then
+	build_slurm
+fi
 
 # Setup directories for each cluster
 cd "${install_path}"
@@ -293,7 +330,10 @@ cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
 # I'm using my own, so don't copy from etc/
 #cp job_submit.lua.example "${tmpetc_p}/job_submit.lua"
 
-generate_dirs_files
+if [ ${preserve_dirs} -eq 0 ]
+then
+	generate_dirs_files
+fi
 
 # Add symlinks to c1/etc. c1 will act as the default cluster.
 cd "${install_path}/c1/etc"
