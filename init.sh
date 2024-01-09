@@ -308,7 +308,6 @@ exec ${install_path}/bin/${file} \"\$@\"
 	# Setup symlinks
 	ln -sfr ../sbin sbin
 	ln -sfr ../share share
-	ln -sfr ../.envrc .envrc
 
 	i=$((${i}+1))
 done
