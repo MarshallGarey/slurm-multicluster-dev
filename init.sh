@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source init.conf
+source script_common.sh
+
 ###############################################################################
 # Functions
 ###############################################################################
@@ -23,31 +26,31 @@ export SLURMRESTD=$(which slurmrestd)' > "${envrc}"
 function mkslurmdbd_conf()
 {
 	local slurmdbd_conf="${install_path}/etc/slurmdbd.conf"
-	echo '#
+	echo "#
 # slurmdbd.conf
 #
 
 # Debug
 DebugLevel=debug
-LogFile=#INSTALL_PATH/log/slurmdbd.log
-PidFile=#INSTALL_PATH/run/slurmdbd.pid
+LogFile=${install_path}/log/slurmdbd.log
+PidFile=${install_path}/run/slurmdbd.pid
 
 # Database info
 StorageType=accounting_storage/mysql
 StorageHost=localhost
 DbdHost=localhost
-DbdPort=#PORT000
-StorageLoc=#DB_NAME
-SlurmUser=#SLURM_USER
+DbdPort=${startingport}000
+StorageLoc=${db_name}
+SlurmUser=${slurm_user}
 TrackWckey=yes
 
 # Configurations
 MessageTimeout=60
 AuthAltTypes=auth/jwt
-AuthAltParameters=jwt_key=#INSTALL_PATH/jwt_hs256.key
+AuthAltParameters=jwt_key=${install_path}/jwt_hs256.key
 
 # Purge and Archive
-ArchiveDir=#INSTALL_PATH/archive
+ArchiveDir=${install_path}/archive
 
 #ArchiveEvents=yes
 #ArchiveJobs=yes
@@ -64,7 +67,7 @@ ArchiveDir=#INSTALL_PATH/archive
 #PurgeSuspendAfter=12hours
 #PurgeTXNAfter=12hours
 #PurgeUsageAfter=12hours
-' > "${slurmdbd_conf}"
+" > "${slurmdbd_conf}"
 
 	chmod 600 etc/slurmdbd.conf
 }
@@ -159,9 +162,6 @@ set -ex
 # Get path to script: https://stackoverflow.com/a/1482133/4880288
 install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
 
-source init.conf
-source script_common.sh
-
 validate_number "${num_clusters}" 1 9 "num_clusters"
 
 # Clone, then build and install Slurm
@@ -221,9 +221,6 @@ mkenvrc
 # Enable direnv
 ./allow_direnv.sh
 
-# Generate slurmdbd.conf
-mkslurmdbd_conf
-
 # Generate jwt key
 mkjwt_key
 
@@ -237,12 +234,10 @@ cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
 
 # Do text substitutions and copy directories to each cluster
 cd "${install_path}"
-sed -i "s@#INSTALL_PATH@${install_path}@g" etc/slurmdbd.conf
-sed -i "s@#SLURM_USER@${slurm_user}@g" etc/slurmdbd.conf
-sed -i "s@#DB_NAME@$db_name@g" etc/slurmdbd.conf
-sed -i "s@#PORT@$startingport@g" etc/slurmdbd.conf
-sed -i "s@#SLURM_USER@${slurm_user}@g" start_clusters.sh
-sed -i "s@#SLURM_USER@${slurm_user}@g" stop_clusters.sh
+
+# Generate slurmdbd.conf
+mkslurmdbd_conf
+
 i=1
 while [ $i -le ${num_clusters} ]
 do
