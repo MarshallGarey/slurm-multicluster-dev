@@ -201,7 +201,7 @@ exec ${install_path}/bin/${file} \"\$@\"
 	done
 }
 
-function generate_dirs_files
+function generate_conf_scripts
 {
 	cd "${install_path}"
 
@@ -281,7 +281,7 @@ Flags:
 
 # Initialize options
 skip_build=0
-preserve_dirs=0
+preserve_conf_scripts=0
 skip_git=0
 preserve_cluster_dirs=0
 while getopts 'cghpr' flag
@@ -290,7 +290,7 @@ do
 	c) skip_build=1 ;;
 	g) skip_git=1 ;;
 	h) print_usage; exit 1 ;;
-	p) preserve_dirs=1 ;;
+	p) preserve_conf_scripts=1 ;;
 	r) preserve_cluster_dirs=1;;
 	*) # Default case
 	   print_usage
@@ -298,7 +298,7 @@ do
 	esac
 done
 
-echo "skip_build=${skip_build}, preserve_dirs=${preserve_dirs}, skip_git=${skip_git}"
+echo "skip_build=${skip_build}, preserve_conf_scripts=${preserve_conf_scripts}, skip_git=${skip_git}, preserve_cluster_dirs=${preserve_cluster_dirs}"
 
 set -ex
 # Get path to script: https://stackoverflow.com/a/1482133/4880288
@@ -344,9 +344,9 @@ cp cli_filter.lua.example "${tmpetc_p}/cli_filter.lua"
 # I'm using my own, so don't copy from etc/
 #cp job_submit.lua.example "${tmpetc_p}/job_submit.lua"
 
-if [ ${preserve_dirs} -eq 0 ]
+if [ ${preserve_conf_scripts} -eq 0 ]
 then
-	generate_dirs_files
+	generate_conf_scripts
 fi
 
 # Add symlinks to c1/etc. c1 will act as the default cluster.
