@@ -270,7 +270,8 @@ Flags:
 -c: Skip configuring and compiling Slurm
 -g: Skip git clone or pull
 -h: Display this message
--p: Preserve exisiting Slurm configuration files and scripts, do not (re)generate cluster directories
+-p: Preserve exisiting Slurm configuration files and scripts
+-r: Do not (re)generate cluster directories. This includes generating the cluster directories and the directories within (such as bin, etc, log, run).
 "
 }
 
@@ -282,13 +283,15 @@ Flags:
 skip_build=0
 preserve_dirs=0
 skip_git=0
-while getopts 'cghp' flag
+preserve_cluster_dirs=0
+while getopts 'cghpr' flag
 do
 	case "${flag}" in
 	c) skip_build=1 ;;
 	g) skip_git=1 ;;
 	h) print_usage; exit 1 ;;
 	p) preserve_dirs=1 ;;
+	r) preserve_cluster_dirs=1;;
 	*) # Default case
 	   print_usage
 	   exit 1 ;;
@@ -319,7 +322,10 @@ cd "${install_path}"
 # Create base directories
 mkdirs_common
 
-generate_cluster_dirs
+if [ ${preserve_cluster_dirs} -eq 0 ]
+then
+	generate_cluster_dirs
+fi
 
 cd "${install_path}"
 mkenvrc
