@@ -158,6 +158,49 @@ function build_slurm()
 	fi
 }
 
+function generate_cluster_dirs()
+{
+	i=1
+	while [ $i -le ${num_clusters} ]
+	do
+		c="${install_path}/c$i"
+		#echo $c
+		# Make the cluster directory and any additional needed directories.
+		mkdir -p "${c}"
+		cd "${c}"
+		mkdirs_common
+		mkdir -p spool
+		# Setup the bin directory; each script will be a wrapper of the
+		# actual binary file
+		mkdir -p bin
+		cd "${install_path}"
+		set +x
+		echo "Generate cluster ${c} bin files"
+		for file in $(ls bin/)
+		do
+			script="${c}/bin/${file}"
+			#echo $script
+			printf "\
+#!/bin/sh
+export SLURM_CONF=${c}/etc/slurm.conf
+exec ${install_path}/bin/${file} \"\$@\"
+" > $script
+			chmod 775 $script
+		done
+
+		set -x
+		# envrc
+		cd "${c}"
+		mkenvrc
+
+		# Setup symlinks
+		ln -sfr ../sbin sbin
+		ln -sfr ../share share
+
+		i=$((${i}+1))
+	done
+}
+
 function generate_dirs_files
 {
 	cd "${install_path}"
@@ -276,45 +319,7 @@ cd "${install_path}"
 # Create base directories
 mkdirs_common
 
-i=1
-while [ $i -le ${num_clusters} ]
-do
-	c="${install_path}/c$i"
-	#echo $c
-	# Make the cluster directory and any additional needed directories.
-	mkdir -p "${c}"
-	cd "${c}"
-	mkdirs_common
-	mkdir -p spool
-	# Setup the bin directory; each script will be a wrapper of the
-	# actual binary file
-	mkdir -p bin
-	cd "${install_path}"
-	set +x
-	echo "Generate cluster ${c} bin files"
-	for file in $(ls bin/)
-	do
-		script="${c}/bin/${file}"
-		#echo $script
-		printf "\
-#!/bin/sh
-export SLURM_CONF=${c}/etc/slurm.conf
-exec ${install_path}/bin/${file} \"\$@\"
-" > $script
-		chmod 775 $script
-	done
-
-	set -x
-	# envrc
-	cd "${c}"
-	mkenvrc
-
-	# Setup symlinks
-	ln -sfr ../sbin sbin
-	ln -sfr ../share share
-
-	i=$((${i}+1))
-done
+generate_cluster_dirs
 
 cd "${install_path}"
 mkenvrc
