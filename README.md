@@ -3,7 +3,13 @@ This is my development environment for Slurm. It sets up an environment to run
 three clusters in Slurm.
 
 ## Setup
-Create a directory for this repository. For example:
+### Install required packages for Slurm
+Assuming Debian/Ubuntu:
+
+    apt install git gitk git-gui build-essential mariadb-client mariadb-server libmariadb-dev expect libgtk2.0-dev libhdf5-dev libmunge-dev libhwloc-dev rocm-smi-lib libpam0g-dev libjson-c-dev libhttp-parser-dev liblz4-dev libnvidia-ml-dev libyaml-dev libjwt-dev libibmad-dev libibumad-dev libibverbs-dev libfreeipmi-dev liblua5.3-dev librrd-dev man2html libcurl4-openssl-dev libipmimonitoring-dev check traceroute cmake librdkafka-dev libdbus-1-dev libze-dev libfl-dev libevent-dev
+
+### Create a directory for this repository.
+For example:
 
 `/home/username/slurm/dir_name/`
 
