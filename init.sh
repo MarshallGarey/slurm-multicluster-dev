@@ -13,7 +13,10 @@ function mkenvrc()
 	# envrc used to be a symlink. It isn't now. This rm will remove
 	# the old symlink and ensure that it is a regular file.
 	# This only matters for old setups that still have the symlink.
-	rm "${envrc}"
+	if [ $(find -name "${envrc}" | wc -l) -eq 1 ]
+	then
+		rm "${envrc}"
+	fi
 	echo '# .envrc
 # This file is used by direnv (https://direnv.net/).
 # direnv needs to be hooked into the shell: https://direnv.net/docs/hook.html
