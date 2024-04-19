@@ -142,6 +142,3 @@ Add the following to `.bashrc` (or whatever the equivalent is for your shell):
     # Now cd to the current directory to force the custom cd function to happen
     # when a new shell is created.
     cd .
-
-
-You could also use this as an alternative to direnv and .envrc.
