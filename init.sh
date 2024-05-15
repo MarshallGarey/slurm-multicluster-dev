@@ -13,7 +13,7 @@ function mkenvrc()
 	# envrc used to be a symlink. It isn't now. This rm will remove
 	# the old symlink and ensure that it is a regular file.
 	# This only matters for old setups that still have the symlink.
-	if [ $(find -name "${envrc}" | wc -l) -eq 1 ]
+	if [ $(find -maxdepth 1 -name "${envrc}" | wc -l) -eq 1 ]
 	then
 		rm "${envrc}"
 	fi
