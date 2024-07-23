@@ -4,12 +4,14 @@
 	"account": "acct1",
 	"argv": [],
 	"cpus_per_task": 1,
-	"current_working_directory": "/home/marshall/slurm/23.11/install/c1",
-	"environment":["PATH=/bin:/usr/bin/:/usr/local/bin/:/home/marshall/slurm/23.11/install/c1/bin"],
+	"current_working_directory": "/home/marshall/slurm/master/install/c1",
+	"environment":["PATH=/bin:/usr/bin/:/usr/local/bin/:/home/marshall/slurm/master/install/c1/bin"],
+	"exclusive":["user"],
 	"memory_per_node": { "set": true , "number" : 128 },
 	"name":"restd-test",
+	"required_nodes":["n1-1","n1-[3-5]"],
 	"partition": "debug",
+	"script":"#!/bin/sh\n sleep 60",
 	"time_limit": { "set" : true , "number" : 100 }
-},
-"script":"#!/bin/sh\n sleep 60"
+}
 }
