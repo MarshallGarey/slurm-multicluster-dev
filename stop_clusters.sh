@@ -20,7 +20,7 @@ echo "Stopping Slurm"
 if [ -n "`find ${install_path}/run ! -name '.gitignore' -type f`" ]
 then
 	printf "Stopping:\n`ls ${install_path}/run/`\n"
-	for pid in `cat ${install_path}/run/*.pid`; do sudo kill -SIGINT $pid; done
+	for pid in `cat ${install_path}/run/*.pid`; do sudo kill -SIGTERM $pid; done
 fi
 # Max number of clusters is 9
 for i in {1..9}
@@ -33,6 +33,6 @@ do
 	if [ -n "$(find ${p}/run ! -name '.gitignore' -type f)" ]
 	then
 		printf "Stopping:\n$(ls ${p}/run/)\n"
-		for pid in $(cat ${install_path}/c$i/run/*.pid); do sudo kill -SIGINT $pid; done
+		for pid in $(cat ${install_path}/c$i/run/*.pid); do sudo kill -SIGTERM $pid; done
 	fi
 done
