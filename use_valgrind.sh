@@ -1,7 +1,8 @@
 #!/bin/bash
 if [ $# -lt 1 ]
 then
-	echo "Expecting executable and arguments to the executable as an argument"
+	echo "Expecting executable and arguments to the executable, for example:"
+	echo "./use_valgrind.sh slurmctld -D -vvv"
 	exit 1
 fi
 valgrind --leak-check=full \
