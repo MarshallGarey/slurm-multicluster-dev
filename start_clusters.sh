@@ -60,7 +60,14 @@ fi
 
 sudo ./stop_clusters.sh
 
+if [ -z "${slurm_conf}" ]
+then
+	export SLURM_CONF="${install_path}/etc/slurm.conf"
+else
+	export SLURM_CONF="${slurm_conf}"
+fi
 # Start slurmdbd
+echo "Start slurmdbd"
 "${install_path}"/sbin/slurmdbd
 sleep 1
 
@@ -74,6 +81,7 @@ do
 	else
 		SLURM_CONF="${slurm_conf}"
 	fi
+	echo "Start slurmctld"
 	"${install_path}"/sbin/slurmctld -f $SLURM_CONF $slurmctld_flags
 	i=$(($i+1))
 done
