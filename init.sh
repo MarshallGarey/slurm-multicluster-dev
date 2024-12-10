@@ -137,15 +137,15 @@ function clone_slurm()
 	fi
 	if [ -z "${branch_name}" ]
 	then
-		git clone git@github.com:SchedMD/slurm.git ../slurm
+		git clone git@gitlab.com:SchedMD/dev/slurm.git ../slurm
 	else
-		count=$(git ls-remote --heads https://github.com/SchedMD/slurm.git "${branch_name}" | wc -l)
+		count=$(git ls-remote --heads https://gitlab.com/SchedMD/dev/slurm.git "${branch_name}" | wc -l)
 		if [ "${count}" -ne 1 ]
 		then
 			echo "Specified Slurm branch \"${branch_name}\" does not exist."
 			exit -1
 		fi
-		git clone --single-branch -b "${branch_name}" git@github.com:SchedMD/slurm.git ../slurm
+		git clone --single-branch -b "${branch_name}" git@gitlab.com:SchedMD/dev/slurm.git ../slurm
 	fi
 }
 
