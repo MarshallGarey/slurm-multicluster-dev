@@ -132,12 +132,9 @@ function clone_slurm()
 		# Already exists; pull latest changes
 		cd "${p}"
 		git pull
-		cd -
-		return
-	fi
-	if [ -z "${branch_name}" ]
+	elif [ -z "${branch_name}" ]
 	then
-		git clone git@gitlab.com:SchedMD/dev/slurm.git ../slurm
+		git clone git@gitlab.com:SchedMD/dev/slurm.git "${p}"
 	else
 		count=$(git ls-remote --heads https://gitlab.com/SchedMD/dev/slurm.git "${branch_name}" | wc -l)
 		if [ "${count}" -ne 1 ]
@@ -145,8 +142,10 @@ function clone_slurm()
 			echo "Specified Slurm branch \"${branch_name}\" does not exist."
 			exit -1
 		fi
-		git clone --single-branch -b "${branch_name}" git@gitlab.com:SchedMD/dev/slurm.git ../slurm
+		git clone --single-branch -b "${branch_name}" git@gitlab.com:SchedMD/dev/slurm.git "${p}"
 	fi
+	pre-commit install
+	cd "${install_path}"
 }
 
 function build_slurm()
@@ -311,6 +310,7 @@ echo "skip_build=${skip_build}, preserve_conf_scripts=${preserve_conf_scripts}, 
 set -ex
 # Get path to script: https://stackoverflow.com/a/1482133/4880288
 install_path="$(dirname -- "$( readlink -f -- "$0"; )";)"
+repo_dir="${install_path}/../slurm"
 
 validate_number "${num_clusters}" 1 9 "num_clusters"
 
