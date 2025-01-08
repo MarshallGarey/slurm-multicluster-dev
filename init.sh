@@ -153,7 +153,7 @@ function build_slurm()
 	cd "${install_path}"
 	mkdir -p build lib
 	cd build
-	../../slurm/configure --prefix="${install_path}" --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir="${install_path}/lib"
+	../../slurm/configure --prefix="${install_path}" --enable-developer --enable-multiple-slurmd --disable-optimizations --with-pam_dir="${install_path}/lib" CC="${compiler}"
 	# Build and install
 	makeme=$(which make.py)
 	rc=$?
@@ -275,6 +275,7 @@ function print_usage()
 Usage: init.sh [flags]
 Flags:
 -c: Skip configuring and compiling Slurm
+-d: Use gcc as the compiler (default compiler is clang)
 -g: Skip git clone or pull
 -h: Display this message
 -p: Preserve exisiting Slurm configuration files and scripts
@@ -291,10 +292,12 @@ skip_build=0
 preserve_conf_scripts=0
 skip_git=0
 preserve_cluster_dirs=0
-while getopts 'cghpr' flag
+compiler="clang"
+while getopts 'cdghpr' flag
 do
 	case "${flag}" in
 	c) skip_build=1 ;;
+	d) compiler="gcc" ;;
 	g) skip_git=1 ;;
 	h) print_usage; exit 1 ;;
 	p) preserve_conf_scripts=1 ;;
@@ -305,7 +308,7 @@ do
 	esac
 done
 
-echo "skip_build=${skip_build}, preserve_conf_scripts=${preserve_conf_scripts}, skip_git=${skip_git}, preserve_cluster_dirs=${preserve_cluster_dirs}"
+echo "skip_build=${skip_build}, compiler=${compiler}, skip_git=${skip_git}, preserve_conf_scripts=${preserve_conf_scripts}, preserve_cluster_dirs=${preserve_cluster_dirs}"
 
 set -ex
 # Get path to script: https://stackoverflow.com/a/1482133/4880288
