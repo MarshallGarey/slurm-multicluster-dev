@@ -20,14 +20,14 @@ this repository "install":
     git clone git@github.com:MarshallGarey/slurm-multicluster-dev.git install
 
 ### Initialize everything:
-  * Open init.conf. Set the variables.
   * (Optional) Install [direnv](https://direnv.net/):
     * Install direnv with a package manager (e.g. sudo apt install direnv).
     * [Hook](https://direnv.net/docs/hook.html) direnv to your shell by
       following the directions on that website.
   * (Optional) Download [make.py](https://gitlab.com/SchedMD/support/scripts/-/raw/master/make.py)
     and add it to your path. `make.py` builds Slurm a lot faster than `make -j`.
-  * Run ./init.sh
+  * Open init.conf. Set the variables.
+  * Run ./init.sh. NOTE: Use the -h flag to see parameters.
 
 ### Tools to speed up compilation
 
@@ -43,17 +43,8 @@ to speed up compilation.
 ### How to setup Slurm's database:
 This is required before you can run Slurm.
 Follow the directions at [Slurm's accounting page](https://slurm.schedmd.com/accounting.html) to setup the database.
-Change the permissions of the slurmdbd.conf file to 600 (required by Slurm).
-Start slurmdbd, then add clusters, desired accounts, and desired users.
-
-    # cd to the base of this repository
-    mkdir archive
-    chmod 600 etc/slurmdbd.conf
-    ./sbin/slurmdbd
-    export SLURM_CONF=`pwd`/etc/slurm.conf
-    sacctmgr add cluster c1 c2 c3
-    sacctmgr add account acct1
-    sacctmgr add user ${slurm_user} account=acct1
+The init.sh script will run the Slurm commands to add a cluster, account, and
+users to the database.
 
 ## How to Start Slurm:
 
